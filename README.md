@@ -11,15 +11,19 @@ Setup Config
 To set up the config the required parameters are below:
 
   * version=2.1
-  * user=
-  * password=
-  * tenant=
+  * user= <required>
+  * password= <required>
+  * tenant= <required>
   * auth_url=http://XX.XX.XXX.XXX:5000/v2.0
-  * services_list=cinder, nova, glance, neutron, swift
+  * keystone_auth_url=http://xx.xx.xxx.xxx:5000/v3
+  * services_list=nova, swift, keystone
+  * image_id= <required>
+  * instance_name=Test_DeleteInstance
+  * container_name=CONTAINER
+  * object_name=test_Object
+  * flavor_size=42
   * daemon_file=
-  * output_file=
-
-__Note:__ If you are pinging Swift you must have a container name specified.
+  * output_file=output.txt
 
 Running the script
 =================
@@ -30,37 +34,33 @@ This script will parse the following arguments from the command-line and pulls a
 
 --services is a comma-delimited list of services, defaults to the value in os.cnf
 
---time is the total amount of time in seconds that the script will check the api's of the given services. Defaults to 60.
+--time is the total amount of interations that the script will check the api's of the given services. Defaults to 60.
 
-To test against glance & nova:
+--daemon mode will run until the file api.uptime.stop is created
 
-    python call_test.py -s glance, nova
+Example to run swift during test in Daemon mode (recommended):
 
-Daemon Mode
-===========
-
-This script can also be run in daemon mode, where it will continuously run until a given file (specified in os.cnf) is detected (the default is sys.prefix/api.uptime.stop).
-
-To run the script in daemon mode, simply run:
-
-    python call_test.py -d
-
-To end daemon mode, create the file at the specified location.
+    python call_test.py -d -s swift
 
 Time Mode
 ===========
 
-This script can also be run in time mode, where it will continuously run for the specified number of seconds.
+This script can also be run in time mode, where it will continuously run for the specified number of seconds (or iterations).
 
 To run the script in time mode, simply run:
 
-    python call_test.py -t 5
+    python call_test.py -t 5 -s swift
 
-Where 5 is the number of seconds.
+Where 5 is the number of seconds (or iterations).
 
 Output File
 ===========
 
 A location for the output file can be specified in os.cnf or specified via the command-line via the -o/--output-file option.
 
-If no output file is given the output will be printed to stdout.
+If no output file is given the output will be printed to stdout.  This file contains a json summary containing results of the run.
+
+Status Files
+============
+
+There are also 3 files nova_status, swift_status, keystone_status.  These files are populated after each iteration of the test and provide a status of - 0 or 1 - denoting whether the service is up or down.
