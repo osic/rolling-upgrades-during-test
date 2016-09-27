@@ -1,11 +1,11 @@
 import datetime
 import time
-from time import sleep
-from multiprocessing import Pipe, Process
 import sys
 import unittest
 
 from novaclient import client as novaclient
+from time import sleep
+from multiprocessing import Pipe, Process
 
 class ApiUptime(unittest.TestCase):
     def __init__(self, version, username, password, tenant, auth_url):
