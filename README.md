@@ -11,13 +11,13 @@ Setup Config
 To set up the config the required parameters are below:
 
   * version=2.1
-  * user= <required>
-  * password= <required>
-  * tenant= <required>
+  * user= __(required)__
+  * password= __(required)__
+  * tenant= __(required)__
   * auth_url=http://XX.XX.XXX.XXX:5000/v2.0
   * keystone_auth_url=http://xx.xx.xxx.xxx:5000/v3
   * services_list=nova, swift, keystone
-  * image_id= <required>
+  * image_id= __(required)__
   * instance_name=Test_DeleteInstance
   * container_name=CONTAINER
   * object_name=test_Object
