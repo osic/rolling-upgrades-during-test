@@ -1,8 +1,8 @@
 [openstack]
 version=2.1
-user=admin
-password=secrete
-tenant=admin
+user=
+password=
+tenant=
 auth_url=http://xx.xx.xxx.xxx:5000/v2.0
 keystone_auth_url=http://xx.xx.xxx.xxx:5000/v3
 services_list=nova, swift, keystone
