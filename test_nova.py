@@ -38,7 +38,6 @@ class ApiUptime(unittest.TestCase):
         except Exception as e:
 	    c.send(False)
 	    c.close()
-	    conn.send('STOP')
 	    return False
 
 	#Verify delete
