@@ -2,7 +2,8 @@ A python script that runs api scenarios on an OpenStack environment in-parallel 
 
 To get started:
 
-1. Pull the repository
+1. Pull the repository (git clone https://github.com/lamarwhitej/test_rolling_upgrades_during.git)
+2. cd test_rolling_upgrades_during
 2. pip install -r requirements.txt
 3. Setup os.cnf file
 
