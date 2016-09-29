@@ -6,9 +6,9 @@ import os
 import sys
 import logging
 
-import test_nova
-import test_swift
-import test_keystone
+from test_project import test_nova
+from test_project import test_swift
+from test_project import test_keystone
 
 LOG = logging.getLogger(__name__)
 
@@ -65,6 +65,7 @@ def entry_point():
     time_value = cl_args.daemon if cl_args.daemon else cl_args.times
 
     pipes = []
+    service = None
     for s in services:
 	if s == "nova":
 	    mad = test_nova.ApiUptime(version, user, password, tenant, auth_url)
@@ -72,18 +73,21 @@ def entry_point():
             pipes.append(p)
             Process(target=mad.test_create_delete_server, args=(c,s,time_value,flavor_size,instance_name,image_id,)).start()
             c.close()
+	    service = s
 	if s == "swift":
 	    mad = test_swift.ApiUptime(version, user, password, tenant, auth_url)
             p, c = Pipe()
             pipes.append(p)
             Process(target=mad.test_create_delete_container, args=(c,s,time_value,container_name,object_name,)).start()
 	    c.close()
+	    service = s
 	if s == "keystone":
 	    mad = test_keystone.ApiUptime(version, user, password, tenant, keystone_auth_url)
             p, c = Pipe()
             pipes.append(p)
             Process(target=mad.test_create_validate_token, args=(c,s,time_value,)).start()
             c.close()
+	    service = s
 
     if cl_args.daemon:
         while True:
@@ -94,11 +98,14 @@ def entry_point():
 
     outputs = [pipe.recv() for pipe in pipes]
     final_output = {k: v for d in outputs for k, v in d.items()}
+    
+    if len(services) == 1:
+        output_file = service + '_' + output_file
 
     if output_file is None or output_file == '':
         print json.dumps(final_output)
     else:
-        with open(output_file, 'w') as out:
+        with open('output_json/' + output_file, 'w') as out:
             out.write(json.dumps(final_output))
 
 
