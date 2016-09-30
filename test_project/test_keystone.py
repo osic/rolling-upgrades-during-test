@@ -73,6 +73,7 @@ class ApiUptime():
 		self.write_status(service, 1, build_start)
 		sleep(1)
 	    except Exception as e:
+		print e
 		down_time = time.time()
 		total_down_time += int(down_time - start_time)
 	        self.write_status(service, 0, build_start)

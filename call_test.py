@@ -50,11 +50,11 @@ def entry_point():
     image_id = config.get("compute", "image_ref")
     auth_url = config.get("identity", "uri")
     keystone_auth_url = config.get("identity", "uri_v3")
+    flavor_size = config.get("compute", "flavor_ref")
 
     config.read("os.cnf") #add custom config
     version = config.get("openstack", "version")
     services_list = config.get("openstack", "services_list")
-    flavor_size = config.get("openstack", "flavor_size")
     instance_name = config.get("openstack", "instance_name")
     container_name = config.get("openstack", "container_name")
     object_name = config.get("openstack", "object_name")

@@ -147,6 +147,7 @@ class ApiUptime(unittest.TestCase):
 		c.close()
 		sleep(1)
 	    except Exception as e:
+		print e
 		c.send(False)
                 c.close()
 		self.write_status(service, 0, build_start)
