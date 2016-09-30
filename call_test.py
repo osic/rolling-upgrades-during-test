@@ -42,22 +42,25 @@ def entry_point():
 
     # Initialize Config Variables
     config = SafeConfigParser()
-    config.read("os.cnf")
+
+    config.read("../tempest/etc/tempest.conf") #initialize environment from tempest.conf
+    user = config.get("auth", "admin_username")
+    password = config.get("auth", "admin_password")
+    tenant = config.get("auth", "admin_project_name")
+    image_id = config.get("compute", "image_ref")
+    auth_url = config.get("identity", "uri")
+    keystone_auth_url = config.get("identity", "uri_v3")
+
+    config.read("os.cnf") #add custom config
     version = config.get("openstack", "version")
-    user = config.get("openstack", "user")
-    password = config.get("openstack", "password")
-    tenant = config.get("openstack", "tenant")
-    auth_url = config.get("openstack", "auth_url")
     services_list = config.get("openstack", "services_list")
-    image_id = config.get("openstack", "image_id")
     flavor_size = config.get("openstack", "flavor_size")
     instance_name = config.get("openstack", "instance_name")
     container_name = config.get("openstack", "container_name")
     object_name = config.get("openstack", "object_name")
-    keystone_auth_url = config.get("openstack", "keystone_auth_url")
     daemon_file = config.get("openstack", "daemon_file") or os.path.join(sys.prefix, "api.uptime.stop")
     output_file = cl_args.output_file or config.get("openstack", "output_file")
-
+    
     if cl_args.daemon and os.path.exists(daemon_file):
         os.remove(daemon_file)
 

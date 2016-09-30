@@ -112,6 +112,7 @@ class ApiUptime(unittest.TestCase):
 	        c.send(True)
                 c.close()
             except Exception as e:
+	   	print e
                 if server:
                     #Delete server
                     self.delete_server(c, conn, server.id, server.status)
