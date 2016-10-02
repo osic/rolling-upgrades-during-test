@@ -38,6 +38,7 @@ class ArgumentParser(argparse.ArgumentParser):
 
 
 def entry_point():
+    print sys.prefix
     cl_args = ArgumentParser().parse_args()
 
     # Initialize Config Variables
