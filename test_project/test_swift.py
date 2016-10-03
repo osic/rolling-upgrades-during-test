@@ -71,6 +71,7 @@ class ApiUptime(unittest.TestCase):
         try:
             self.swift.delete_object(container=container_name,obj=object_name)
         except Exception as e:
+	    print e
 	    return True
 	return False
 	    
@@ -78,6 +79,7 @@ class ApiUptime(unittest.TestCase):
 	try:
 	    self.swift.delete_container(container=container_name)
         except Exception as e:
+	    print e
 	    return True
 	return False
 
