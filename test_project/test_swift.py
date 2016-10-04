@@ -144,7 +144,7 @@ class ApiUptime(unittest.TestCase):
 		failed_delete = self.delete_container(c, conn, container_name)
 		self.assertFalse(failed_delete)
 		
-		#self.write_status(service, 1, build_start)
+		self.write_status(service, 1, build_start)
 	        c.send(True)
 		c.close()
 		sleep(1)
