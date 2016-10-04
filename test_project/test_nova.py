@@ -108,7 +108,7 @@ class ApiUptime(unittest.TestCase):
                 average_build_time = int(total_build_time/count)
 
                 #Write to status log
-                self.write_status(service, True, status_timestamp)
+                #self.write_status(service, True, status_timestamp)
 	        c.send(True)
                 c.close()
             except Exception as e:
