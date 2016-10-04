@@ -70,7 +70,7 @@ class ApiUptime():
 		c.close()
 		
 	        #Write to logfile
-		self.write_status(service, 1, build_start)
+		#self.write_status(service, 1, build_start)
 		sleep(1)
 	    except Exception as e:
 		print e
