@@ -42,15 +42,24 @@ def entry_point():
 
     # Initialize Config Variables
     config = SafeConfigParser()
-
-    config.read("../tempest/etc/tempest.conf") #initialize environment from tempest.conf
-    user = config.get("auth", "admin_username")
-    password = config.get("auth", "admin_password")
-    tenant = config.get("auth", "admin_project_name")
-    image_id = config.get("compute", "image_ref")
-    auth_url = config.get("identity", "uri")
-    keystone_auth_url = config.get("identity", "uri_v3")
-    flavor_size = config.get("compute", "flavor_ref")
+    if os.path.isfile("../tempest/etc/tempest.conf"):
+        config.read("../tempest/etc/tempest.conf") #initialize environment from tempest.conf
+        user = config.get("auth", "admin_username")
+        password = config.get("auth", "admin_password")
+        tenant = config.get("auth", "admin_project_name")
+        image_id = config.get("compute", "image_ref")
+        auth_url = config.get("identity", "uri")
+        keystone_auth_url = config.get("identity", "uri_v3")
+        flavor_size = config.get("compute", "flavor_ref")
+    else:
+        config.read("os.cnf") #add custom config
+        user=config.get("openstack", "user")
+        password=("openstack", "password")
+        tenant=("openstack", "tenant")
+        auth_url=config.get("openstack", "auth_url")
+        keystone_auth_url=config.get("openstack", "keystone_auth_url")
+        image_id=("openstack", "image_id")
+        flavor_size=("openstack", "flavor_size")
 
     config.read("os.cnf") #add custom config
     version = config.get("openstack", "version")
