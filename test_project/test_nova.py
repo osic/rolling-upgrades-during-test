@@ -107,7 +107,7 @@ class ApiUptime(unittest.TestCase):
                 average_build_time = int(total_build_time/count)
 
                 #Write to status log
-                self.write_status(service, True, status_timestamp)
+                self.write_status(service, 1, status_timestamp)
 		output.append(True)
             except Exception as e:
 	   	print e
@@ -121,7 +121,7 @@ class ApiUptime(unittest.TestCase):
                 total_down_time += (float(build_finish) - build_start)
 
                 #Write to status log
-                self.write_status(service, False, status_timestamp)
+                self.write_status(service, 0, status_timestamp)
 		output.append(False)
 
         self.report(conn, service, sum(output),
