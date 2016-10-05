@@ -71,7 +71,7 @@ class ApiUptime():
 
 	        #Write to logfile
 		self.write_status(service, 1, build_start)
-		sleep(2)
+		sleep(1)
 	    except Exception as e:
 		print e
 		down_time = time.time()
