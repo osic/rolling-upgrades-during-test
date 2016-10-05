@@ -32,12 +32,11 @@ class ApiUptime(unittest.TestCase):
 	self._wait_until(self.nova.servers.get, server.id, server)
 	return server
 	
-    def delete_server(self, c, conn, server_id, status):
+    def delete_server(self, server_id, status):
 	try:
 	    self.nova.servers.delete(server=server_id)
         except Exception as e:
-	    c.send(False)
-	    c.close()
+	    print e
 	    return False
 
 	#Verify delete
@@ -62,7 +61,7 @@ class ApiUptime(unittest.TestCase):
         conn.close()
 
     def test_create_delete_server(self, conn, service, times, flavor=None, name=None, image=None):
-        pipes = []
+        output = []
         start_time = datetime.datetime.now()
         count = 0
         duration = 0
@@ -84,8 +83,8 @@ class ApiUptime(unittest.TestCase):
         for _ in times:
             if conn.poll() and conn.recv() == "STOP":
                 break
-            p, c = Pipe()
-            try:
+          
+	    try:
                 #Create server
                 build_start = time.time()
                 server = self.create_server(name,image,flavor)
@@ -95,7 +94,7 @@ class ApiUptime(unittest.TestCase):
                 self.assertTrue(server.status == 'ACTIVE')
                 
 		#Delete server
-                server_delete = self.delete_server(c, conn, server.id, server.status)
+                server_delete = self.delete_server(server.id, server.status)
                 if server_delete <> True:
                         break
 
@@ -109,8 +108,7 @@ class ApiUptime(unittest.TestCase):
 
                 #Write to status log
                 self.write_status(service, True, status_timestamp)
-	        c.send(True)
-                c.close()
+		output.append(True)
             except Exception as e:
 	   	print e
                 if server:
@@ -124,11 +122,8 @@ class ApiUptime(unittest.TestCase):
 
                 #Write to status log
                 self.write_status(service, False, status_timestamp)
-                c.send(False)
-                c.close()
-            pipes.append(p)
+		output.append(False)
 
-        output = [pipe.recv() for pipe in pipes]
         self.report(conn, service, sum(output),
                     len(output), average_build_time, str(start_time), str(datetime.datetime.now()), total_down_time)
 

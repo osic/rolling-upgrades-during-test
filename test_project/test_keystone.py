@@ -37,7 +37,7 @@ class ApiUptime():
         conn.close()
 
     def test_create_validate_token(self, conn, service, times):
-        pipes = []
+	output = []
         start_time = datetime.datetime.now()
         down_time = None
 	start_time = 0
@@ -55,8 +55,8 @@ class ApiUptime():
 	for _ in times:
             if conn.poll() and conn.recv() == "STOP":
                 break
-            p, c = Pipe()
-            build_start = str(datetime.datetime.now())
+            
+	    build_start = str(datetime.datetime.now())
 	    start_time = time.time()
 
 	    try:
@@ -65,10 +65,10 @@ class ApiUptime():
 		
 		#Validate token
 		self.keystone_client.tokens.validate(token)
-
-		c.send(True)	
-		c.close()
 		
+		#Send success
+	     	output.append(True)
+
 	        #Write to logfile
 		self.write_status(service, 1, build_start)
 		sleep(2)
@@ -77,12 +77,11 @@ class ApiUptime():
 		down_time = time.time()
 		total_down_time += int(down_time - start_time)
 	        self.write_status(service, 0, build_start)
-                c.send(False)
-                c.close()
-		sleep(1)
-            pipes.append(p)
 
-        output = [pipe.recv() for pipe in pipes]
+		#Send Fail
+		output.append(False)
+		sleep(1)
+
         self.report(conn, service, sum(output),
                     len(output), str(build_start), 
 		    str(datetime.datetime.now()), total_down_time)

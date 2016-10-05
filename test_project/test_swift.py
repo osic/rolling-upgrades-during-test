@@ -67,7 +67,7 @@ class ApiUptime(unittest.TestCase):
 	    return False
 	return True
 
-    def delete_object(self, c, conn, container_name, object_name):
+    def delete_object(self, container_name, object_name):
         try:
             self.swift.delete_object(container=container_name,obj=object_name)
         except Exception as e:
@@ -75,7 +75,7 @@ class ApiUptime(unittest.TestCase):
 	    return True
 	return False
 	    
-    def delete_container(self, c, conn, container_name):
+    def delete_container(self, container_name):
 	try:
 	    self.swift.delete_container(container=container_name)
         except Exception as e:
@@ -90,8 +90,10 @@ class ApiUptime(unittest.TestCase):
             f.close()
 
     def report(self, conn, service, success, total, start_time, end_time, down_time):
+	#Avoiding division by 0
         if total < 1: 
 	    total = 1
+
 	uptime_pct = 100 * (float(success)/total)
         conn.send({
             service: {
@@ -105,7 +107,7 @@ class ApiUptime(unittest.TestCase):
         conn.close()
 
     def test_create_delete_container(self, conn, service, times, container_name, object_name):
-        pipes = []
+	output = []
         start_time = datetime.datetime.now()
         down_time = None
         total_time = 0
@@ -131,31 +133,37 @@ class ApiUptime(unittest.TestCase):
 		break
             if conn.poll() and conn.recv() == "STOP":
                 break
-            p, c = Pipe()
-            build_start = str(datetime.datetime.now())
+            
+	    build_start = str(datetime.datetime.now())
 	    try:
+
+		#Create new container
 		new_container = self.create_container(swift_url, headers, container_name)
 		self.assertTrue(new_container)
+
+		#Create new object
 		new_object = self.create_object(swift_url, headers, container_name, object_name)
 		self.assertTrue(new_object)
 
-	        failed_delete = self.delete_object(c, conn, container_name, object_name)
+		#Delete Object
+	        failed_delete = self.delete_object(container_name, object_name)
 		self.assertFalse(failed_delete)
-		failed_delete = self.delete_container(c, conn, container_name)
+
+		#Delete Container
+		failed_delete = self.delete_container(container_name)
 		self.assertFalse(failed_delete)
 		
 		self.write_status(service, 1, build_start)
-	        c.send(True)
-		c.close()
+
+		#Send Success
+		output.append(True)
 		sleep(1)
 	    except Exception as e:
 		print e
-		c.send(False)
-                c.close()
+		#Send Fail
+		output.append(False)
 		self.write_status(service, 0, build_start)
 		sleep(1)
-            pipes.append(p)
 
-        output = [pipe.recv() for pipe in pipes]
         self.report(conn, service, sum(output),
                     len(output), str(start_time), str(datetime.datetime.now()), total_down_time)
