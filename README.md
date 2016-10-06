@@ -71,7 +71,7 @@ Collecting Results
 
 Results are stored in json format in __test_rolling_upgrades_during/output_json__ (soon to be chosen by user) folder. 
 
-If test is run for only a single project (python call_test.py -d -s <project>):
+If test is run for only a single project (python call_test.py -d -s __project__):
 
     /<project>_output.txt
     {"<project>": {"successful_requests": 5, "down_time":0, "start_time": "2016-10-04 17:44:53.408151", "end_time": "2016-10-04   
