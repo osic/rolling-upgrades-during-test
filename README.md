@@ -65,3 +65,24 @@ Status Files
 ============
 
 There are also 3 files nova_status, swift_status, keystone_status.  These files are populated after each iteration of the test and provide a status of - 0 or 1 - denoting whether the service is up or down.
+
+Collecting Results
+==================
+
+Results are stored in json format in test_rolling_upgrades_during/output_json (soon to be chosen by user) folder. 
+
+If test is run for only a single project (python call_test.py -d -s swift):
+
+    /swift_output.txt
+    {"swift": {"successful_requests": 5, "down_time":0, "start_time": "2016-10-04 17:44:53.408151", "end_time": "2016-10-04   
+    7:44:59.542367", "uptime_pct": 100.0, "total_requests": 5,"failed_requests": 0}}
+    
+If test is run for all projects:
+
+    /output.txt
+    {"keystone": {"successful_requests": 5, "down_time": 0, "start_time": "2016-10-04 17:45:01.745154", "end_time": "2016-10-04             17:45:03.769696", "uptime_pct": 100.0, "total_requests": 5, "failed_requests": 0}, "swift": {"successful_requests": 5, "down_time":     0, "start_time": "2016-10-04 17:44:53.408151", "end_time": "2016-10-04 17:44:59.542367", "uptime_pct": 100.0, "total_requests": 5,       "failed_requests": 0}, "nova": {"successful_requests": 5, "down_time": 0, "start_time": "2016-10-04 17:44:53.407046", "end_time":       "2016-10-04 17:45:43.814132", "uptime_pct": 100.0, "total_requests": 5, "average_build_time": 9, "failed_requests": 0}}
+
+Every run will produce a status file for each project.  It contains the success or fail of every run of a scenario.
+
+    /<project>_status.txt
+    {'status': 1, 'timestamp': '2016-10-06 09:29:08.192266', 'service': <project>}
