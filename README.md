@@ -69,12 +69,12 @@ There are also 3 files nova_status, swift_status, keystone_status.  These files 
 Collecting Results
 ==================
 
-Results are stored in json format in test_rolling_upgrades_during/output_json (soon to be chosen by user) folder. 
+Results are stored in json format in __test_rolling_upgrades_during/output_json__ (soon to be chosen by user) folder. 
 
-If test is run for only a single project (python call_test.py -d -s swift):
+If test is run for only a single project (python call_test.py -d -s <project>):
 
-    /swift_output.txt
-    {"swift": {"successful_requests": 5, "down_time":0, "start_time": "2016-10-04 17:44:53.408151", "end_time": "2016-10-04   
+    /<project>_output.txt
+    {"<project>": {"successful_requests": 5, "down_time":0, "start_time": "2016-10-04 17:44:53.408151", "end_time": "2016-10-04   
     7:44:59.542367", "uptime_pct": 100.0, "total_requests": 5,"failed_requests": 0}}
     
 If test is run for all projects:
