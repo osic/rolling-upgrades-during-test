@@ -13,6 +13,7 @@ from swiftclient import client as swiftclient
 class ApiUptime(unittest.TestCase):
     def __init__(self, version, username, password, tenant, auth_url):
         self.swift = swiftclient.Connection(authurl=auth_url, user=username, tenant_name=tenant, key=password, auth_version='2')
+	print "auth_url" + auth_url
 	self.url = auth_url + '/'
         self.data = '{"auth":{"passwordCredentials":{"username":"' + username + '","password": "' + password + '"},"tenantName": "' + tenant + '"}}'
 
