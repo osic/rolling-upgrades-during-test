@@ -13,7 +13,6 @@ from swiftclient import client as swiftclient
 class ApiUptime(unittest.TestCase):
     def __init__(self, version, username, password, tenant, auth_url):
         self.swift = swiftclient.Connection(authurl=auth_url, user=username, tenant_name=tenant, key=password, auth_version='2')
-	print "auth_url" + auth_url
 	self.url = auth_url + '/'
         self.data = '{"auth":{"passwordCredentials":{"username":"' + username + '","password": "' + password + '"},"tenantName": "' + tenant + '"}}'
 
@@ -27,7 +26,6 @@ class ApiUptime(unittest.TestCase):
         for x in f:
             d = json.loads(x)
             token = d['access']['token']['id']
-            token = str(token)
 	f.close()
         header = {'X-Auth-Token': token}
         return header
@@ -54,10 +52,7 @@ class ApiUptime(unittest.TestCase):
         return swift_url + '/'
 
     def create_container(self, url, headers, container_name):
-        status = None
-	print "put request here: " + url + container_name
         response = str(requests.put(url + container_name, headers=headers))
-	print response
 	if '503' in response:
 	    return False
 	elif '404' in response:
@@ -67,7 +62,6 @@ class ApiUptime(unittest.TestCase):
     def create_object(self, url, headers, container_name, object_name):
 	status = None
 	response = str(requests.put(url + container_name + '/' + object_name, headers=headers))
-	print response
 	if '503' in response:
 	    return False
 	return True
@@ -130,7 +124,6 @@ class ApiUptime(unittest.TestCase):
 	open('output_json/swift_status.txt','w')
 
 	headers = self.get_token()
-	print headers
 	swift_url = self.get_swift_url()
         
         for _ in times:
