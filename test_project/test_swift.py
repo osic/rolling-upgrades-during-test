@@ -130,6 +130,7 @@ class ApiUptime(unittest.TestCase):
 	open('output_json/swift_status.txt','w')
 
 	headers = self.get_token()
+	print headers
 	swift_url = self.get_swift_url()
         
         for _ in times:
