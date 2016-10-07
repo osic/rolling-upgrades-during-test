@@ -61,7 +61,6 @@ class ApiUptime(unittest.TestCase):
 
     def create_object(self, url, headers, container_name, object_name):
 	response = str(requests.put(url + container_name + '/' + object_name, headers=headers))
-	sleep(30)
 	if '503' in response:
 	    return False
 	return True
@@ -144,7 +143,6 @@ class ApiUptime(unittest.TestCase):
 		new_object = self.create_object(swift_url, headers, container_name, object_name)
 		self.assertTrue(new_object)
 		
-		sleep(30)
 		#Delete Object
 	        #failed_delete = self.delete_object(container_name, object_name)
 		#self.assertFalse(failed_delete)
