@@ -50,22 +50,6 @@ class ApiUptime(unittest.TestCase):
         f.close()
         return swift_url + '/'
 
-"""
-    def create_container(self, url, headers, container_name):
-        response = str(requests.put(url + container_name, headers=headers))
-	sleep(30)
-	if '503' in response:
-	    return False
-	elif '404' in response:
-	    return False
-	return True
-
-    def create_object(self, url, headers, container_name, object_name):
-	response = str(requests.put(url + container_name + '/' + object_name, headers=headers))
-	if '503' in response:
-	    return False
-	return True
-"""
     def create_container(self, container_name):
         status = None
         self.swift.put_container(container=container_name)
