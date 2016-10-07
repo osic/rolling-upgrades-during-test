@@ -143,7 +143,7 @@ class ApiUptime(unittest.TestCase):
 		new_object = self.create_object(swift_url, headers, container_name, object_name)
 		self.assertTrue(new_object)
 		
-
+		sleep(30)
 		#Delete Object
 	        failed_delete = self.delete_object(container_name, object_name)
 		self.assertFalse(failed_delete)
