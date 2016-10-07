@@ -56,7 +56,7 @@ class ApiUptime(unittest.TestCase):
     def create_container(self, url, headers, container_name):
         status = None
 	print "put request here: " + url + container_name
-        response = str(requests.put(url + container_name, headers=headers))
+        response = str(requests.post(url + container_name, headers=headers))
 	if '503' in response:
 	    return False
 	elif '404' in response:
@@ -65,7 +65,7 @@ class ApiUptime(unittest.TestCase):
 
     def create_object(self, url, headers, container_name, object_name):
 	status = None
-	response = str(requests.put(url + container_name + '/' + object_name, headers=headers))
+	response = str(requests.post(url + container_name + '/' + object_name, headers=headers))
 	print response
 	if '503' in response:
 	    return False
