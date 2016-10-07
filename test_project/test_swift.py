@@ -60,7 +60,7 @@ class ApiUptime(unittest.TestCase):
 
     def create_object(self, url, headers, container_name, object_name):
 	response = str(requests.put(url + container_name + '/' + object_name, headers=headers))
-	sleep 30
+	sleep(30)
 	if '503' in response:
 	    return False
 	return True
