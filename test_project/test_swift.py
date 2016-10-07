@@ -146,12 +146,12 @@ class ApiUptime(unittest.TestCase):
 		
 		sleep(30)
 		#Delete Object
-	        failed_delete = self.delete_object(container_name, object_name)
-		self.assertFalse(failed_delete)
+	        #failed_delete = self.delete_object(container_name, object_name)
+		#self.assertFalse(failed_delete)
 
 		#Delete Container
-		failed_delete = self.delete_container(container_name)
-		self.assertFalse(failed_delete)
+		#failed_delete = self.delete_container(container_name)
+		#self.assertFalse(failed_delete)
 		
 		self.write_status(service, 1, build_start)
 
