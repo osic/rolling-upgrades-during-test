@@ -57,6 +57,7 @@ class ApiUptime(unittest.TestCase):
         status = None
 	print "put request here: " + url + container_name
         response = str(requests.post(url + container_name, headers=headers))
+	print response
 	if '503' in response:
 	    return False
 	elif '404' in response:
