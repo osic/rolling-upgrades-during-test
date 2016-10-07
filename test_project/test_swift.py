@@ -27,7 +27,7 @@ class ApiUptime(unittest.TestCase):
         for x in f:
             d = json.loads(x)
             token = d['access']['token']['id']
-        
+            token = str(token)
 	f.close()
         header = {'X-Auth-Token': token}
         return header
