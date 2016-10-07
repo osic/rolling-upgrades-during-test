@@ -52,6 +52,7 @@ class ApiUptime(unittest.TestCase):
 
     def create_container(self, url, headers, container_name):
         response = str(requests.put(url + container_name, headers=headers))
+	sleep(30)
 	if '503' in response:
 	    return False
 	elif '404' in response:
