@@ -67,7 +67,7 @@ def entry_point():
     instance_name = config.get("openstack", "instance_name")
     container_name = config.get("openstack", "container_name")
     object_name = config.get("openstack", "object_name")
-    daemon_file = config.get("openstack", "daemon_file") or os.path.join(sys.prefix, "api.uptime.stop")
+    daemon_file = config.get("openstack", "daemon_file") or os.path.join(sys.prefix, "during.uptime.stop")
     output_file = cl_args.output_file or config.get("openstack", "output_file")
     
     if cl_args.daemon and os.path.exists(daemon_file):
