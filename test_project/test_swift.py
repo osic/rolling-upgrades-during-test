@@ -139,7 +139,7 @@ class ApiUptime(unittest.TestCase):
 		self.assertTrue(new_container)
 
 		#Create new object
-		new_container = self.create_container(swift_url, headers, container_name)
+		new_object = self.create_object(swift_url, headers, container_name, object_name)
 		self.assertTrue(new_object)
 		
 		#Delete Object
