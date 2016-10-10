@@ -50,17 +50,19 @@ class ApiUptime(unittest.TestCase):
         f.close()
         return swift_url + '/'
 
-    def create_container(self, container_name):
-        status = None
-        self.swift.put_container(container=container_name)
-        status = True
-        return status
+    def create_container(self, url, headers, container_name):
+        response = str(requests.put(url + container_name, headers=headers))
+        if '503' in response:
+            return False
+        elif '404' in response:
+            return False
+        return True
 
-    def create_object(self, container_name, object_name):
-        status = None
-        self.swift.put_object(container=container_name,obj=object_name,contents='youaretestdata')
-        status = True
-        return status
+    def create_object(self, url, headers, container_name, object_name):
+        response = str(requests.put(url + container_name + '/' + object_name, headers=headers))
+        if '503' in response:
+            return False
+        return True
 
     def delete_object(self, container_name, object_name):
         try:
@@ -133,22 +135,20 @@ class ApiUptime(unittest.TestCase):
 	    try:
 
 		#Create new container
-		#new_container = self.create_container(swift_url, headers, container_name)
-		new_container = self.create_container(container_name)
+		new_container = self.create_container(swift_url, headers, container_name)
 		self.assertTrue(new_container)
 
 		#Create new object
-		#new_container = self.create_container(swift_url, headers, container_name)
-		new_object = self.create_object(container_name, object_name)
+		new_container = self.create_container(swift_url, headers, container_name)
 		self.assertTrue(new_object)
 		
 		#Delete Object
-	        #failed_delete = self.delete_object(container_name, object_name)
-		#self.assertFalse(failed_delete)
+	        failed_delete = self.delete_object(container_name, object_name)
+		self.assertFalse(failed_delete)
 
 		#Delete Container
-		#failed_delete = self.delete_container(container_name)
-		#self.assertFalse(failed_delete)
+		failed_delete = self.delete_container(container_name)
+		self.assertFalse(failed_delete)
 		
 		self.write_status(service, 1, build_start)
 
