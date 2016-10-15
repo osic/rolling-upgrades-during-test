@@ -27,6 +27,7 @@ class ApiUptime():
         uptime_pct = 100 * (float(success)/total)
         conn.send({
             service: {
+		"project": service,
                 "uptime_pct": uptime_pct,
                 "total_requests": total,
                 "successful_requests": success,
