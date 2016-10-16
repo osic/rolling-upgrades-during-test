@@ -22,7 +22,7 @@ class ApiUptime(unittest.TestCase):
 
     def write_status(self, service, status, build_start):
             status = str({"service": service, "status": status, "timestamp": build_start})
-            f = open('output_json/nova_status.txt','a')
+            f = open('../output/nova_status.txt','a')
             f.write(status + "\n")
             f.close()
 
@@ -79,7 +79,7 @@ class ApiUptime(unittest.TestCase):
         else:
             times = xrange(times)
 
-        open('output_json/nova_status.txt','w')
+        open('../output/nova_status.txt','w')
 
         for _ in times:
             if conn.poll() and conn.recv() == "STOP":
@@ -114,7 +114,7 @@ class ApiUptime(unittest.TestCase):
 	   	print e
                 if server:
                     #Delete server
-                    self.delete_server(c, conn, server.id, server.status)
+                    self.delete_server(server.id, server.status)
 
                 #Record down time
                 status_timestamp = str(datetime.datetime.now())

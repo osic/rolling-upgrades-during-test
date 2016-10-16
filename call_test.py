@@ -117,7 +117,7 @@ def entry_point():
     if output_file is None or output_file == '':
         print json.dumps(final_output)
     else:
-        with open('output_json/' + output_file, 'w') as out:
+        with open('../output/' + output_file, 'w') as out:
             out.write(json.dumps(final_output))
 
 
