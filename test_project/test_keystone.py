@@ -51,7 +51,7 @@ class ApiUptime():
             times = xrange(times)
         pipes = []
 
-	open('./output/keystone_status.txt','w')
+	open('../output/keystone_status.txt','w')
         
 	for _ in times:
             if conn.poll() and conn.recv() == "STOP":
