@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime
 import time
 import sys
 import requests
@@ -106,7 +106,7 @@ class ApiUptime(unittest.TestCase):
 
     def test_create_delete_container(self, conn, service, times, container_name, object_name):
 	output = []
-        start_time = datetime.datetime.now()
+        start_time = datetime.now().strftime("%Y-%m-%dT%H:%M:%S%z")
         down_time = None
         total_time = 0
         total_down_time = 0
@@ -132,7 +132,7 @@ class ApiUptime(unittest.TestCase):
             if conn.poll() and conn.recv() == "STOP":
                 break
             
-	    build_start = str(datetime.datetime.now())
+	    build_start = str(datetime.now().strftime("%Y-%m-%dT%H:%M:%S%z"))
 	    try:
 
 		#Create new container
@@ -164,4 +164,4 @@ class ApiUptime(unittest.TestCase):
 		sleep(1)
 
         self.report(conn, service, sum(output),
-                    len(output), str(start_time), str(datetime.datetime.now()), total_down_time)
+                    len(output), str(start_time), str(datetime.now().strftime("%Y-%m-%dT%H:%M:%S%z")), total_down_time)
