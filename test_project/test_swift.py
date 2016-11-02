@@ -48,6 +48,9 @@ class ApiUptime(unittest.TestCase):
 	    f.close()
 	    return False
         f.close()
+	
+	if swift_url == None: return False
+	
         return swift_url + '/'
 
     def create_container(self, url, headers, container_name):
