@@ -53,13 +53,13 @@ def entry_point():
         flavor_size = config.get("compute", "flavor_ref")
     else:
         config.read("os.cnf") #add custom config
-        user=config.get("openstack", "user")
-        password=("openstack", "password")
-        tenant=("openstack", "tenant")
-        auth_url=config.get("openstack", "auth_url")
-        keystone_auth_url=config.get("openstack", "keystone_auth_url")
-        image_id=("openstack", "image_id")
-        flavor_size=("openstack", "flavor_size")
+        user = config.get("openstack", "user")
+        password = config.get("openstack", "password")
+        tenant = config.get("openstack", "tenant")
+        auth_url = config.get("openstack", "auth_url")
+        keystone_auth_url = config.get("openstack", "keystone_auth_url")
+        image_id = config.get("openstack", "image_id")
+        flavor_size = config.get("openstack", "flavor_size")
 
     config.read("os.cnf") #add custom config
     version = config.get("openstack", "version")
