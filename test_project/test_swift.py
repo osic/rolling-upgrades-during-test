@@ -108,6 +108,7 @@ class ApiUptime(unittest.TestCase):
         conn.close()
 
     def test_create_delete_container(self, conn, service, times, container_name, object_name):
+	print("Starting Swift during tests")
 	output = []
         start_time = datetime.now().strftime("%Y-%m-%dT%H:%M:%S%z")
         down_time = None
