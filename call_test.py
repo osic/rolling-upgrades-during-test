@@ -4,13 +4,10 @@ import json
 from multiprocessing import Pipe, Process
 import os
 import sys
-import logging
 
 from test_project import test_nova
 from test_project import test_swift
 from test_project import test_keystone
-
-LOG = logging.getLogger(__name__)
 
 class ArgumentParser(argparse.ArgumentParser):
     def __init__(self):
