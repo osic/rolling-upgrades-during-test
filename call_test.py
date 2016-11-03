@@ -75,6 +75,9 @@ def entry_point():
 
     pipes = []
     service = None
+
+    print "Beginning test"
+
     for s in services:
 	if s == "nova":
 	    mad = test_nova.ApiUptime(version, user, password, tenant, auth_url)
