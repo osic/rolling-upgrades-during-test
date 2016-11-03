@@ -38,6 +38,7 @@ class ApiUptime():
         conn.close()
 
     def test_create_validate_token(self, conn, service, times):
+	print "Running Keystone during upgrade tests."
 	output = []
         start_time = datetime.datetime.now()
         down_time = None
