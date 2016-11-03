@@ -113,16 +113,12 @@ def entry_point():
     
     if len(services) == 1:
         output_file = service + '_' + output_file
-   
-    print "Finalizing output for During test."
 	
     if output_file is None or output_file == '':
         print json.dumps(final_output)
     else:
         with open('../output/' + output_file, 'w') as out:
             out.write(json.dumps(final_output))
-	
-    print "Output finalized."
 
 if __name__ == "__main__":
     entry_point()
