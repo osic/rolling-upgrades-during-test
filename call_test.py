@@ -39,8 +39,8 @@ def entry_point():
 
     # Initialize Config Variables
     config = SafeConfigParser()
-    if os.path.isfile("../tempest/etc/tempest.conf"):
-        config.read("../tempest/etc/tempest.conf") #initialize environment from tempest.conf
+    if os.path.isfile("/root/tempest/etc/tempest.conf"):
+        config.read("/root/tempest/etc/tempest.conf") #initialize environment from tempest.conf
         user = config.get("auth", "admin_username")
         password = config.get("auth", "admin_password")
         tenant = config.get("auth", "admin_project_name")
@@ -114,7 +114,7 @@ def entry_point():
     if output_file is None or output_file == '':
         print json.dumps(final_output)
     else:
-        with open('../output/' + output_file, 'w') as out:
+        with open('/root/output/' + output_file, 'w') as out:
             out.write(json.dumps(final_output))
 
 if __name__ == "__main__":
