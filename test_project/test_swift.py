@@ -108,7 +108,7 @@ class ApiUptime(unittest.TestCase):
         conn.close()
 
     def test_create_delete_container(self, conn, service, times, container_name, object_name):
-	print "Running Swift during upgrade tests"
+	print("Running Swift during upgrade tests")
 	output = []
         start_time = datetime.now().strftime("%Y-%m-%dT%H:%M:%S%z")
         down_time = None
@@ -131,7 +131,7 @@ class ApiUptime(unittest.TestCase):
         
         for _ in times:
 	    if swift_url == False:
-		print "Please check if you have Swift installed."
+		print("Please check if you have Swift installed.")
 		break
             if conn.poll() and conn.recv() == "STOP":
                 break
