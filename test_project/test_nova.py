@@ -62,7 +62,6 @@ class ApiUptime(unittest.TestCase):
         conn.close()
 
     def test_create_delete_server(self, conn, service, times, flavor=None, name=None, image=None):
-	print "Running Nova during upgrade tests."
         output = []
         start_time = datetime.datetime.now()
         count = 0
