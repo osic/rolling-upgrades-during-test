@@ -85,7 +85,7 @@ class ApiUptime(unittest.TestCase):
 
     def write_status(self, service, status, build_start):
 	    status = str({"service": service, "status": status, "timestamp": build_start})
-            f = open('../output/swift_status.txt','a')
+            f = open('/root/output/swift_status.txt','a')
             f.write(status + "\n")
             f.close()
 
@@ -123,7 +123,7 @@ class ApiUptime(unittest.TestCase):
         else:
             times = xrange(times)
 
-	open('../output/swift_status.txt','w')
+	open('/root/output/swift_status.txt','w')
 
 	headers = self.get_token()
 	swift_url = self.get_swift_url()
