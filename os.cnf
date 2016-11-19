@@ -12,5 +12,5 @@ password=secrete
 tenant=admin
 auth_url=http://xx.xx.xxx.xxx:5000/v2.0
 keystone_auth_url=http://xx.xx.xxx.xxx:5000/v3
-image_id=597cf38c-afc8-43ce-92d6-c8d7cdb19a48
+image_id=
 
