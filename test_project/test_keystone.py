@@ -18,7 +18,7 @@ class ApiUptime():
         self.keystone_client = keystoneclient.Client(session=self.keystone)
 	
     def write_status(self, service, status, build_start):
-	    status = str({"service": service, "status": status, "timestamp": build_start})
+	    status = {"service": service, "status": status, "timestamp": build_start}
             f = open('/root/output/keystone_status.txt','a')
             f.write(status + "\n")
             f.close()
