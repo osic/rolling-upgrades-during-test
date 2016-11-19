@@ -21,9 +21,9 @@ class ApiUptime(unittest.TestCase):
 		break
 
     def write_status(self, service, status, build_start):
-            status = str({"service": service, "status": status, "timestamp": build_start})
+            status = {"service": service, "status": status, "timestamp": build_start}
             f = open('/root/output/nova_status.txt','a')
-            f.write(status + "\n")
+            f.write(json.dumps(status) + "\n")
             f.close()
 
     def create_server(self,name, image, flavor):
@@ -100,7 +100,7 @@ class ApiUptime(unittest.TestCase):
                         break
 
                 #Record timestamp for status
-                status_timestamp = str(datetime.datetime.now())
+                status_timestamp = str(datetime.datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S%z"))
 
                 #Accrue for stats
                 count += 1
