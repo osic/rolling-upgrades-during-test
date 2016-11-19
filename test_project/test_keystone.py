@@ -58,7 +58,7 @@ class ApiUptime():
             if conn.poll() and conn.recv() == "STOP":
                 break
             
-	    build_start = str(datetime.datetime.now())
+	    build_start = str(datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S%z"))
 	    start_time = time.time()
 
 	    try:
