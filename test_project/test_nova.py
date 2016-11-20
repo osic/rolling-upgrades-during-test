@@ -2,6 +2,7 @@ import datetime
 import time
 import sys
 import unittest
+import json
 
 from novaclient import client as novaclient
 from time import sleep
