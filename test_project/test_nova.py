@@ -101,7 +101,7 @@ class ApiUptime(unittest.TestCase):
                         break
 
                 #Record timestamp for status
-                status_timestamp = str(datetime.datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S%z"))
+                status_timestamp = str(datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S%z"))
 
                 #Accrue for stats
                 count += 1
