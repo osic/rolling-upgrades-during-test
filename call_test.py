@@ -4,10 +4,13 @@ import json
 from multiprocessing import Pipe, Process
 import os
 import sys
+import logging
 
 from test_project import test_nova
 from test_project import test_swift
 from test_project import test_keystone
+
+LOG = logging.getLogger(__name__)
 
 class ArgumentParser(argparse.ArgumentParser):
     def __init__(self):
@@ -39,8 +42,8 @@ def entry_point():
 
     # Initialize Config Variables
     config = SafeConfigParser()
-    if os.path.isfile("/root/tempest/etc/tempest.conf"):
-        config.read("/root/tempest/etc/tempest.conf") #initialize environment from tempest.conf
+    if os.path.isfile("../tempest/etc/tempest.conf"):
+        config.read("../tempest/etc/tempest.conf") #initialize environment from tempest.conf
         user = config.get("auth", "admin_username")
         password = config.get("auth", "admin_password")
         tenant = config.get("auth", "admin_project_name")
@@ -51,7 +54,6 @@ def entry_point():
         flavor_size = config.get("compute", "flavor_ref")
     else:
         config.read("os.cnf") #add custom config
-<<<<<<< HEAD
         user=config.get("openstack", "user")
         password=config.get("openstack", "password")
         tenant=config.get("openstack", "tenant")
@@ -60,15 +62,6 @@ def entry_point():
         keystone_auth_url=config.get("openstack", "keystone_auth_url")
         image_id=config.get("openstack", "image_id")
         flavor_size=config.get("openstack", "flavor_size")
-=======
-        user = config.get("openstack", "user")
-        password = config.get("openstack", "password")
-        tenant = config.get("openstack", "tenant")
-        auth_url = config.get("openstack", "auth_url")
-        keystone_auth_url = config.get("openstack", "keystone_auth_url")
-        image_id = config.get("openstack", "image_id")
-        flavor_size = config.get("openstack", "flavor_size")
->>>>>>> ac4c619a98409559f9e556aa229c30dea508783c
 
     config.read("os.cnf") #add custom config
     version = config.get("openstack", "version")
@@ -87,9 +80,6 @@ def entry_point():
 
     pipes = []
     service = None
-
-    print "Beginning test"
-
     for s in services:
 	if s == "nova":
 	    mad = test_nova.ApiUptime(version, user, password, tenant, auth_url)
@@ -125,12 +115,13 @@ def entry_point():
     
     if len(services) == 1:
         output_file = service + '_' + output_file
-	
+
     if output_file is None or output_file == '':
         print json.dumps(final_output)
     else:
-        with open('/root/output/' + output_file, 'w') as out:
+        with open('../output/' + output_file, 'w') as out:
             out.write(json.dumps(final_output))
+
 
 if __name__ == "__main__":
     entry_point()
