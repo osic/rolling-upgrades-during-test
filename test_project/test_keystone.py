@@ -2,9 +2,12 @@ import logging
 import sys
 import time
 import json
+<<<<<<< HEAD
 import requests
 import urllib2
 import unittest
+=======
+>>>>>>> ac4c619a98409559f9e556aa229c30dea508783c
 
 from datetime import datetime
 from multiprocessing import Pipe, Process
@@ -55,7 +58,11 @@ class ApiUptime(unittest.TestCase):
 
     def write_status(self, service, status, build_start):
 	    status = {"service": service, "status": status, "timestamp": build_start}
+<<<<<<< HEAD
             f = open('../output/keystone_status.json','a')
+=======
+            f = open('/root/output/keystone_status.txt','a')
+>>>>>>> ac4c619a98409559f9e556aa229c30dea508783c
             f.write(json.dumps(status) + "\n")
             f.close()
 
@@ -94,6 +101,7 @@ class ApiUptime(unittest.TestCase):
             times = xrange(times)
         pipes = []
 
+<<<<<<< HEAD
 	open('../output/keystone_status.json','w')
 
 	build_start = str(datetime.now().strftime("%Y-%m-%dT%H:%M:%S%z"))
@@ -102,6 +110,15 @@ class ApiUptime(unittest.TestCase):
             if conn.poll() and conn.recv() == "STOP":
                 break
 
+=======
+	open('/root/output/keystone_status.txt','w')
+        
+	for _ in times:
+            if conn.poll() and conn.recv() == "STOP":
+                break
+            
+	    build_start = str(datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S%z"))
+>>>>>>> ac4c619a98409559f9e556aa229c30dea508783c
 	    start_time = time.time()
 
 	    try:

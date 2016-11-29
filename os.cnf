@@ -14,3 +14,12 @@ object_name=test_Object
 flavor_size=42
 daemon_file=
 output_file=during.uptime.out
+<<<<<<< HEAD
+=======
+user=admin
+password=secrete
+tenant=admin
+auth_url=http://xx.xx.xxx.xxx:5000/v2.0
+keystone_auth_url=http://xx.xx.xxx.xxx:5000/v3
+image_id=
+>>>>>>> ac4c619a98409559f9e556aa229c30dea508783c
