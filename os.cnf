@@ -3,23 +3,14 @@ version=2.1
 user=admin
 password=secrete
 tenant=admin
-tenant_id=9c28b5fdb14a43ff881df58cbf3c6442
-auth_url=http://10.64.173.129:5000/v2.0
-keystone_auth_url=http://10.64.173.129:5000/v3
+tenant_id=
+auth_url=http://xx.xx.xxx.xxx:5000/v2.0
+keystone_auth_url=http://xx.xx.xxx.xxx:5000/v3
 services_list=nova, swift, keystone
-image_id=91903882-e89c-48a4-9017-0450e38ab79b
+image_id=
 instance_name=Test_DeleteInstance
 container_name=CONTAINER2
 object_name=test_Object
 flavor_size=42
 daemon_file=
 output_file=during.uptime.out
-<<<<<<< HEAD
-=======
-user=admin
-password=secrete
-tenant=admin
-auth_url=http://xx.xx.xxx.xxx:5000/v2.0
-keystone_auth_url=http://xx.xx.xxx.xxx:5000/v3
-image_id=
->>>>>>> ac4c619a98409559f9e556aa229c30dea508783c
