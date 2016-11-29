@@ -11,18 +11,13 @@ from multiprocessing import Pipe, Process
 
 class ApiUptime(unittest.TestCase):
     def __init__(self, version, username, password, tenant, auth_url):
-<<<<<<< HEAD
 	self.url = auth_url + '/'
-=======
-        self.swift = swiftclient.Connection(authurl=auth_url, user=username, tenant_name=tenant, key=password, auth_version='2')
-	self.url = auth_url
->>>>>>> ac4c619a98409559f9e556aa229c30dea508783c
         self.data = '{"auth":{"passwordCredentials":{"username":"' + username + '","password": "' + password + '"},"tenantName": "' + tenant + '"}}'
 
     def get_token(self):
         get_token = None
         headers = {'Content-Type': 'application/json'}
-        url = self.url + '/tokens'
+        url = self.url + 'tokens'
         req = urllib2.Request(url, self.data, {'Content-Type': 'application/json'})
 
 	try:
@@ -41,7 +36,7 @@ class ApiUptime(unittest.TestCase):
     def get_swift_url(self):
 	swift_url = None
         headers = {'Content-Type': 'application/json'}
-        url = self.url + '/tokens'
+        url = self.url + 'tokens'
         req = urllib2.Request(url, self.data, {'Content-Type': 'application/json'})
 
         try:
@@ -97,11 +92,7 @@ class ApiUptime(unittest.TestCase):
 
     def write_status(self, service, status, build_start):
 	    status = {"service": service, "status": status, "timestamp": build_start}
-<<<<<<< HEAD
             f = open('../output/swift_status.json','a')
-=======
-            f = open('/root/output/swift_status.txt','a')
->>>>>>> ac4c619a98409559f9e556aa229c30dea508783c
             f.write(json.dumps(status) + "\n")
             f.close()
 
@@ -126,7 +117,6 @@ class ApiUptime(unittest.TestCase):
         conn.close()
 
     def test_create_delete_container(self, conn, service, times, container_name, object_name):
-	print("Starting Swift during tests")
 	output = []
         start_time = 0
         total_time = 0
@@ -144,11 +134,7 @@ class ApiUptime(unittest.TestCase):
         else:
             times = xrange(times)
 
-<<<<<<< HEAD
 	open('../output/swift_status.json','w')
-=======
-	open('/root/output/swift_status.txt','w')
->>>>>>> ac4c619a98409559f9e556aa229c30dea508783c
 
 	headers = self.get_token()
 	swift_url = self.get_swift_url()
