@@ -1,16 +1,16 @@
 [openstack]
 version=2.1
+user=admin
+password=secrete
+tenant=admin
+tenant_id=
+auth_url=http://xx.xx.xxx.xxx:5000/v2.0
+keystone_auth_url=http://xx.xx.xxx.xxx:5000/v3
 services_list=nova, swift, keystone
+image_id=
 instance_name=Test_DeleteInstance
 container_name=CONTAINER2
 object_name=test_Object
 flavor_size=42
 daemon_file=
 output_file=during.uptime.out
-user=admin
-password=secrete
-tenant=admin
-auth_url=http://xx.xx.xxx.xxx:5000/v2.0
-keystone_auth_url=http://xx.xx.xxx.xxx:5000/v3
-image_id=
-
