@@ -47,6 +47,7 @@ def entry_point():
         user = config.get("auth", "admin_username")
         password = config.get("auth", "admin_password")
         tenant = config.get("auth", "admin_project_name")
+	tenant_id = config.get("auth", "admin_tenant_id")
         image_id = config.get("compute", "image_ref")
         auth_url = config.get("identity", "uri")
         keystone_auth_url = config.get("identity", "uri_v3")
@@ -54,12 +55,13 @@ def entry_point():
     else:
         config.read("os.cnf") #add custom config
         user=config.get("openstack", "user")
-        password=("openstack", "password")
-        tenant=("openstack", "tenant")
+        password=config.get("openstack", "password")
+        tenant=config.get("openstack", "tenant")
+	tenant_id=config.get("openstack", "tenant_id")
         auth_url=config.get("openstack", "auth_url")
         keystone_auth_url=config.get("openstack", "keystone_auth_url")
-        image_id=("openstack", "image_id")
-        flavor_size=("openstack", "flavor_size")
+        image_id=config.get("openstack", "image_id")
+        flavor_size=config.get("openstack", "flavor_size")
 
     config.read("os.cnf") #add custom config
     version = config.get("openstack", "version")
@@ -83,7 +85,7 @@ def entry_point():
 	    mad = test_nova.ApiUptime(version, user, password, tenant, auth_url)
             p, c = Pipe()
             pipes.append(p)
-            Process(target=mad.test_create_delete_server, args=(c,s,time_value,flavor_size,instance_name,image_id,)).start()
+            Process(target=mad.test_create_delete_server, args=(c,s,time_value,tenant_id,flavor_size,instance_name,image_id,)).start()
             c.close()
 	    service = s
 	if s == "swift":
@@ -94,7 +96,7 @@ def entry_point():
 	    c.close()
 	    service = s
 	if s == "keystone":
-	    mad = test_keystone.ApiUptime(version, user, password, tenant, keystone_auth_url)
+	    mad = test_keystone.ApiUptime(version, user, password, tenant, auth_url)
             p, c = Pipe()
             pipes.append(p)
             Process(target=mad.test_create_validate_token, args=(c,s,time_value,)).start()
