@@ -1,11 +1,8 @@
 import time
 import sys
 import unittest
-<<<<<<< HEAD
 import requests
 import urllib2
-=======
->>>>>>> ac4c619a98409559f9e556aa229c30dea508783c
 import json
 
 from datetime import datetime
@@ -87,11 +84,7 @@ class ApiUptime(unittest.TestCase):
 
     def write_status(self, service, status, build_start):
             status = {"service": service, "status": status, "timestamp": build_start}
-<<<<<<< HEAD
             f = open('../output/nova_status.json','a')
-=======
-            f = open('/root/output/nova_status.txt','a')
->>>>>>> ac4c619a98409559f9e556aa229c30dea508783c
             f.write(json.dumps(status) + "\n")
             f.close()
 
@@ -156,16 +149,12 @@ class ApiUptime(unittest.TestCase):
         else:
             times = xrange(times)
 
-<<<<<<< HEAD
         open('../output/nova_status.json','w')
 
 	headers = self.get_token()
         nova_url = self.get_nova_url()
 
 	build_start = str(datetime.now().strftime("%Y-%m-%dT%H:%M:%S%z"))
-=======
-        open('/root/output/nova_status.txt','w')
->>>>>>> ac4c619a98409559f9e556aa229c30dea508783c
 
         for _ in times:
 
@@ -185,13 +174,8 @@ class ApiUptime(unittest.TestCase):
                 #Create server
                 server = self.create_server(nova_url,headers,tenant_id,name,image,flavor,server_data)
 
-<<<<<<< HEAD
 		#If status is active send true else send false
                 self.assertTrue(server == 'ACTIVE')
-=======
-                #Record timestamp for status
-                status_timestamp = str(datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S%z"))
->>>>>>> ac4c619a98409559f9e556aa229c30dea508783c
 
 		#Delete server
                 server_delete = self.delete_server(nova_url, headers,tenant_id)
@@ -250,4 +234,3 @@ class ApiUptime(unittest.TestCase):
 
         self.report(conn, service, sum(output),
                     len(output), str(build_start), str(datetime.now().strftime("%Y-%m-%dT%H:%M:%S%z")), total_down_time, duration)
-
