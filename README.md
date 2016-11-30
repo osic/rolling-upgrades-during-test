@@ -15,6 +15,7 @@ To set up the config the required parameters are below:
   * user= __(required)__
   * password= __(required)__
   * tenant= __(required)__
+  * tenant_id = __(required)__
   * auth_url=http://XX.XX.XXX.XXX:5000/v2.0
   * keystone_auth_url=http://xx.xx.xxx.xxx:5000/v3
   * services_list=nova, swift, keystone
@@ -69,7 +70,7 @@ There are also 3 files nova_status, swift_status, keystone_status.  These files 
 Collecting Results
 ==================
 
-Results are stored in json format in __test_rolling_upgrades_during/output_json__ (soon to be chosen by user) folder. 
+Results are stored in json format in __test_rolling_upgrades_during/(folder chosen) folder. 
 
 If test is run for only a single project (python call_test.py -d -s __project__):
 
@@ -77,12 +78,12 @@ If test is run for only a single project (python call_test.py -d -s __project__)
     {"<project>": {"successful_requests": 5, "down_time":0, "start_time": "2016-10-04 17:44:53.408151", "end_time": "2016-10-04   
     7:44:59.542367", "uptime_pct": 100.0, "total_requests": 5,"failed_requests": 0}}
     
-If test is run for all projects:
+If test is run for all projects (python call_test.py -d):
 
-    /output.txt
+    /during.uptime.out
     {"keystone": {"successful_requests": 5, "down_time": 0, "start_time": "2016-10-04 17:45:01.745154", "end_time": "2016-10-04             17:45:03.769696", "uptime_pct": 100.0, "total_requests": 5, "failed_requests": 0}, "swift": {"successful_requests": 5, "down_time":     0, "start_time": "2016-10-04 17:44:53.408151", "end_time": "2016-10-04 17:44:59.542367", "uptime_pct": 100.0, "total_requests": 5,       "failed_requests": 0}, "nova": {"successful_requests": 5, "down_time": 0, "start_time": "2016-10-04 17:44:53.407046", "end_time":       "2016-10-04 17:45:43.814132", "uptime_pct": 100.0, "total_requests": 5, "average_build_time": 9, "failed_requests": 0}}
 
 Every run will produce a status file for each project.  It contains the success or fail of every run of a scenario.
 
-    /<project>_status.txt
+    /<project>_status.json
     {'status': 1, 'timestamp': '2016-10-06 09:29:08.192266', 'service': <project>}
