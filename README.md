@@ -70,7 +70,7 @@ There are also 3 files nova_status, swift_status, keystone_status.  These files 
 Collecting Results
 ==================
 
-Results are stored in json format in __test_rolling_upgrades_during/(folder chosen) folder. 
+Results are stored in json format in output folder chosen. 
 
 If test is run for only a single project (python call_test.py -d -s __project__):
 
