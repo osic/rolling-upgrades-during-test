@@ -1,4 +1,4 @@
-A python script that runs api scenarios on an OpenStack environment in-parallel using python-novaclient, python-swiftclient, & python-keystoneclient.  The goal is to test all services of Nova, Swift, and Keystone.
+A python script that runs api scenarios on an OpenStack environment in-parallel using curl calls (separate branch includes python-clients).  The goal is to test all services of Nova, Swift, and Keystone.
 
 To get started:
 
