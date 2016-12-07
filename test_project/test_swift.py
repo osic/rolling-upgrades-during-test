@@ -42,7 +42,7 @@ class ApiUptime(unittest.TestCase):
         try:
             f = urllib2.urlopen(req)
         except Exception as e:
-	    print e
+	    print e 
 	    if any(c in str(e) for c in ('503','404')):
                 return False
 
@@ -65,14 +65,12 @@ class ApiUptime(unittest.TestCase):
 
     def create_container(self, url, headers, container_name):
         response = str(requests.put(url + container_name, headers=headers))
-	print response
 	if any(c in response for c in ('201','202')):
 	    return True
         return False
 
     def create_object(self, url, headers, container_name, object_name):
         response = str(requests.put(url + container_name + '/' + object_name, headers=headers))
-	print response
 	if any(c in response for c in ('201','202')):
             return True
         return False
