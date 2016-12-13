@@ -47,7 +47,6 @@ def entry_point():
         user = config.get("auth", "admin_username")
         password = config.get("auth", "admin_password")
         tenant = config.get("auth", "admin_project_name")
-	tenant_id = config.get("auth", "admin_tenant_id")
         image_id = config.get("compute", "image_ref")
         auth_url = config.get("identity", "uri")
         keystone_auth_url = config.get("identity", "uri_v3")
