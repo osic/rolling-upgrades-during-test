@@ -188,7 +188,7 @@ class ApiUptime(unittest.TestCase):
 		#Done for aggregating total test duration
 		done_time = time.time()
             except Exception as e:
-	   	print e
+	   	print "Failed Nova: " + str(e)
 
 		if '401' in server or '401' in server_delete:
 		    headers = False

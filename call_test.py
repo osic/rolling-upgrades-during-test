@@ -118,6 +118,7 @@ def entry_point():
         print json.dumps(final_output)
     else:
         with open('../output/' + output_file, 'w') as out:
+	    print json.dumps(final_output)
             out.write(json.dumps(final_output))
 
 

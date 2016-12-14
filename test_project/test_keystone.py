@@ -123,7 +123,7 @@ class ApiUptime(unittest.TestCase):
 		sleep(1)
 		done_time = time.time()
 	    except Exception as e:
-		print e
+		print "Failed Keystone: " + str(e)
 
 		self.write_status(service, 0, str(datetime.now().strftime("%Y-%m-%dT%H:%M:%S%z")))
 

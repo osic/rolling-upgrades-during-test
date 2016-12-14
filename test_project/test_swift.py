@@ -178,7 +178,7 @@ class ApiUptime(unittest.TestCase):
                 done_time = time.time()
 	    except Exception as e:
 		#Print error
-		print e
+		print "Failed Swift: " + str(e)
 
                 #Send Fail and write status
                 output.append(False)
