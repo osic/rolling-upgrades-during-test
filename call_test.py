@@ -47,7 +47,6 @@ def entry_point():
         user = config.get("auth", "admin_username")
         password = config.get("auth", "admin_password")
         tenant = config.get("auth", "admin_project_name")
-	tenant_id = config.get("auth", "admin_tenant_id")
         image_id = config.get("compute", "image_ref")
         auth_url = config.get("identity", "uri")
         keystone_auth_url = config.get("identity", "uri_v3")
@@ -57,7 +56,6 @@ def entry_point():
         user=config.get("openstack", "user")
         password=config.get("openstack", "password")
         tenant=config.get("openstack", "tenant")
-	tenant_id=config.get("openstack", "tenant_id")
         auth_url=config.get("openstack", "auth_url")
         keystone_auth_url=config.get("openstack", "keystone_auth_url")
         image_id=config.get("openstack", "image_id")
@@ -85,7 +83,7 @@ def entry_point():
 	    mad = test_nova.ApiUptime(version, user, password, tenant, auth_url)
             p, c = Pipe()
             pipes.append(p)
-            Process(target=mad.test_create_delete_server, args=(c,s,time_value,tenant_id,flavor_size,instance_name,image_id,)).start()
+            Process(target=mad.test_create_delete_server, args=(c,s,time_value,flavor_size,instance_name,image_id,)).start()
             c.close()
 	    service = s
 	if s == "swift":

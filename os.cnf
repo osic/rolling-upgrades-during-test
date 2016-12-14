@@ -3,7 +3,6 @@ version=2.1
 user=admin
 password=secrete
 tenant=admin
-tenant_id=
 auth_url=http://xx.xx.xxx.xxx:5000/v2.0
 keystone_auth_url=http://xx.xx.xxx.xxx:5000/v3
 services_list=nova, swift, keystone

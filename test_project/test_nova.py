@@ -15,11 +15,12 @@ class ApiUptime(unittest.TestCase):
 	self.url = auth_url + '/'
         self.data = '{"auth":{"passwordCredentials":{"username":"' + username + '","password": "' + password + '"},"tenantName": "' + tenant + '"}}'
 
-    def get_token(self):
+    def get_token_tenant_id(self):
         get_token = None
         headers = {'Content-Type': 'application/json'}
         url = self.url + 'tokens'
         req = urllib2.Request(url, self.data, {'Content-Type': 'application/json'})
+	tenant_id = None
 
 	try:
             f = urllib2.urlopen(req)
@@ -30,9 +31,10 @@ class ApiUptime(unittest.TestCase):
         for x in f:
             d = json.loads(x)
             token = d['access']['token']['id']
+	    tenant_id = d['access']['token']['tenant']['id']
 	f.close()
         header = {'X-Auth-Token': token}
-        return header
+        return header, tenant_id
 
     def get_nova_url(self):
 	swift_url = None
@@ -131,7 +133,7 @@ class ApiUptime(unittest.TestCase):
 		"uptime_pct": uptime_pct}})
         conn.close()
 
-    def test_create_delete_server(self, conn, service, times, tenant_id=None, flavor=None, name=None, image=None):
+    def test_create_delete_server(self, conn, service, times, flavor=None, name=None, image=None):
         output = []
         start_time = 0
         status = None
@@ -151,7 +153,7 @@ class ApiUptime(unittest.TestCase):
 
         open('../output/nova_status.json','w')
 
-	headers = self.get_token()
+	headers, tenant_id  = self.get_token_tenant_id()
         nova_url = self.get_nova_url()
 
 	build_start = str(datetime.now().strftime("%Y-%m-%dT%H:%M:%S%z"))
