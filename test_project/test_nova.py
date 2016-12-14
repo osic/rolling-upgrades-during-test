@@ -15,12 +15,11 @@ class ApiUptime(unittest.TestCase):
 	self.url = auth_url + '/'
         self.data = '{"auth":{"passwordCredentials":{"username":"' + username + '","password": "' + password + '"},"tenantName": "' + tenant + '"}}'
 
-    def get_token_tenant_id(self):
+    def get_token(self):
         get_token = None
         headers = {'Content-Type': 'application/json'}
         url = self.url + 'tokens'
         req = urllib2.Request(url, self.data, {'Content-Type': 'application/json'})
-	tenant_id = None
 
 	try:
             f = urllib2.urlopen(req)
@@ -31,10 +30,9 @@ class ApiUptime(unittest.TestCase):
         for x in f:
             d = json.loads(x)
             token = d['access']['token']['id']
-	    tenant_id = d['access']['token']['tenant']['id']
 	f.close()
         header = {'X-Auth-Token': token}
-        return header, tenant_id
+        return header
 
     def get_nova_url(self):
 	swift_url = None
@@ -90,8 +88,8 @@ class ApiUptime(unittest.TestCase):
             f.write(json.dumps(status) + "\n")
             f.close()
 
-    def create_server(self,url,headers,tenant_id,name, image, flavor, data):
-	url = url + tenant_id + '/servers'
+    def create_server(self,url,headers,name, image, flavor, data):
+	url = url + '/servers'
 	response = requests.post(url, data=data,headers=headers)
 
 	if any(c in str(response) for c in ('201','202')):
@@ -107,8 +105,8 @@ class ApiUptime(unittest.TestCase):
         status = self._wait_until(url + '/' + self.server_id, headers)
 	return status
 
-    def delete_server(self, url, headers, tenant_id):
-	url = url + tenant_id + '/servers/' + self.server_id
+    def delete_server(self, url, headers):
+	url = url + '/servers/' + self.server_id
 	response = str(requests.delete(url, headers=headers))
 
 	return response
@@ -153,7 +151,7 @@ class ApiUptime(unittest.TestCase):
 
         open('../output/nova_status.json','w')
 
-	headers, tenant_id  = self.get_token_tenant_id()
+	headers  = self.get_token()
         nova_url = self.get_nova_url()
 
 	build_start = str(datetime.now().strftime("%Y-%m-%dT%H:%M:%S%z"))
@@ -174,13 +172,13 @@ class ApiUptime(unittest.TestCase):
                     self.assertNotEqual(swift_url,False)
 
                 #Create server
-                server = self.create_server(nova_url,headers,tenant_id,name,image,flavor,server_data)
+                server = self.create_server(nova_url,headers,name,image,flavor,server_data)
 
 		#If status is active send true else send false
                 self.assertTrue(server == 'ACTIVE')
 
 		#Delete server
-                server_delete = self.delete_server(nova_url, headers,tenant_id)
+                server_delete = self.delete_server(nova_url, headers)
 		self.assertIn('204',server_delete)
 
                 #Write to status log
@@ -196,7 +194,7 @@ class ApiUptime(unittest.TestCase):
 		    headers = False
                 elif server:
                     #Delete server
-		    server_delete = self.delete_server(nova_url, headers,tenant_id)
+		    server_delete = self.delete_server(nova_url, headers)
 
 		    #If server doesn't delete we need to try until it does
 		    while '204' not in server_delete:
@@ -214,7 +212,7 @@ class ApiUptime(unittest.TestCase):
 
 		        print "Server delete failed.  Attempting to delete server"
 			sleep(10)
-                        server_delete = self.delete_server(nova_url, headers,tenant_id)
+                        server_delete = self.delete_server(nova_url, headers)
 
                 #Record down time
                 status_timestamp = str(datetime.now().strftime("%Y-%m-%dT%H:%M:%S%z"))
