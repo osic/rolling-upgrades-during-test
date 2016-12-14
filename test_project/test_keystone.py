@@ -5,6 +5,7 @@ import json
 import requests
 import urllib2
 import unittest
+import os
 
 from datetime import datetime
 from multiprocessing import Pipe, Process
@@ -55,7 +56,7 @@ class ApiUptime(unittest.TestCase):
 
     def write_status(self, service, status, build_start):
 	    status = {"service": service, "status": status, "timestamp": build_start}
-            f = open('../output/keystone_status.json','a')
+            f = open('%s/output/keystone_status.json' % os.environ['HOME'],'a')
             f.write(json.dumps(status) + "\n")
             f.close()
 
@@ -94,7 +95,7 @@ class ApiUptime(unittest.TestCase):
             times = xrange(times)
         pipes = []
 
-	open('../output/keystone_status.json','w')
+	open('%s/output/keystone_status.json' % os.environ['HOME'],'w')
 
 	build_start = str(datetime.now().strftime("%Y-%m-%dT%H:%M:%S%z"))
 

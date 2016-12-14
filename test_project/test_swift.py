@@ -1,11 +1,12 @@
-from datetime import datetime
 import time
 import sys
 import requests
 import urllib2
 import unittest
 import json
+import os
 
+from datetime import datetime
 from time import sleep
 from multiprocessing import Pipe, Process
 
@@ -90,7 +91,7 @@ class ApiUptime(unittest.TestCase):
 
     def write_status(self, service, status, build_start):
 	    status = {"service": service, "status": status, "timestamp": build_start}
-            f = open('../output/swift_status.json','a')
+            f = open('%s/output/swift_status.json' % os.environ['HOME'],'a')
             f.write(json.dumps(status) + "\n")
             f.close()
 
@@ -132,7 +133,7 @@ class ApiUptime(unittest.TestCase):
         else:
             times = xrange(times)
 
-	open('../output/swift_status.json','w')
+	open('%s/output/swift_status.json' % os.environ['HOME'],'w')
 
 	headers = self.get_token()
 	swift_url = self.get_swift_url()

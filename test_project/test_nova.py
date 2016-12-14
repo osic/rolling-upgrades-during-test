@@ -4,6 +4,7 @@ import unittest
 import requests
 import urllib2
 import json
+import os
 
 from datetime import datetime
 from time import sleep
@@ -84,7 +85,7 @@ class ApiUptime(unittest.TestCase):
 
     def write_status(self, service, status, build_start):
             status = {"service": service, "status": status, "timestamp": build_start}
-            f = open('../output/nova_status.json','a')
+            f = open('%s/output/nova_status.json' % os.environ['HOME'],'a')
             f.write(json.dumps(status) + "\n")
             f.close()
 
@@ -97,7 +98,7 @@ class ApiUptime(unittest.TestCase):
 	elif '401' in str(response):
 	    return str(response)
 	else:
-            return False
+            return str(response)
 
 	#Wait until active
 	response = response.json()
@@ -106,7 +107,7 @@ class ApiUptime(unittest.TestCase):
 	return status
 
     def delete_server(self, url, headers):
-	url = url + '/servers/' + self.server_id
+	url = url + '/servers/' + str(self.server_id)
 	response = str(requests.delete(url, headers=headers))
 
 	return response
@@ -149,7 +150,7 @@ class ApiUptime(unittest.TestCase):
         else:
             times = xrange(times)
 
-        open('../output/nova_status.json','w')
+        open('%s/output/nova_status.json' % os.environ['HOME'],'w')
 
 	headers  = self.get_token()
         nova_url = self.get_nova_url()

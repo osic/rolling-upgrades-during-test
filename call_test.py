@@ -36,9 +36,11 @@ class ArgumentParser(argparse.ArgumentParser):
             required=False, default=None)
 
 
-
 def entry_point():
     cl_args = ArgumentParser().parse_args()
+
+    # Check if a process is already running for script
+    checkRunningPid()
 
     # Initialize Config Variables
     config = SafeConfigParser()
@@ -117,9 +119,36 @@ def entry_point():
     if output_file is None or output_file == '':
         print json.dumps(final_output)
     else:
-        with open('../output/' + output_file, 'w') as out:
+        output_path = '%s/output/' % os.environ['HOME']
+        with open(output_path + output_file, 'w') as out:
 	    print json.dumps(final_output)
             out.write(json.dumps(final_output))
+	    print "Output here: " + output_path + output_file
+
+
+def checkRunningPid():
+    pid = str(os.getpid())
+    pid_file = '%s/during_test_tmp.pid' % os.environ['HOME']
+
+    if os.path.isfile(pid_file):
+	print "Reading from %s checking if process is still running." % pid_file
+        r_pid = int(open(pid_file,'r+').readlines()[0])
+        ps_command = "ps -o command= %s | grep -Eq 'python call_test'" % r_pid
+        process_exit = os.system(ps_command)
+        if process_exit == 0:
+	    print "Looks like process is already running please kill pid: kill " + pid
+        else:
+	    print "Process is not running. Recording pid %s in %s" % (pid,pid_file)
+	    print "DO NOT DELETE THIS FILE"
+	    f = open(pid_file, 'w')
+	    f.write(pid)
+	    f.close()
+    else:
+	print "Recording pid %s in %s" % (pid,pid_file)
+	print "DO NOT DELETE THIS FILE"
+	f = open(pid_file, 'w')
+	f.write(pid)
+	f.close()
 
 
 if __name__ == "__main__":
