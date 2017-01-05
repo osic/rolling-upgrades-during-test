@@ -96,7 +96,7 @@ def entry_point():
 	    c.close()
 	    service = s
 	if s == "keystone":
-	    mad = test_keystone.ApiUptime(version, user, password, tenant, auth_url)
+	    mad = test_keystone.ApiUptime(version, user, password, tenant, keystone_auth_url)
             p, c = Pipe()
             pipes.append(p)
             Process(target=mad.test_create_validate_token, args=(c,s,time_value,)).start()
@@ -138,14 +138,12 @@ def checkRunningPid():
         if process_exit == 0:
 	    print "Looks like process is already running please kill pid: kill " + pid
         else:
-	    print "Process is not running. Recording pid %s in %s" % (pid,pid_file)
-	    print "DO NOT DELETE THIS FILE"
+	    print "Process is not running. Recording pid %s in %s. DO NOT DELETE THIS FILE" % (pid,pid_file)
 	    f = open(pid_file, 'w')
 	    f.write(pid)
 	    f.close()
     else:
-	print "Recording pid %s in %s" % (pid,pid_file)
-	print "DO NOT DELETE THIS FILE"
+	print "Recording pid %s in %s. DO NOT DELETE THIS FILE" % (pid,pid_file)
 	f = open(pid_file, 'w')
 	f.write(pid)
 	f.close()

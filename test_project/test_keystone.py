@@ -14,36 +14,37 @@ from time import sleep
 class ApiUptime(unittest.TestCase):
     def __init__(self, version, username, password, tenant, auth_url):
         self.url = auth_url + '/'
-	self.data = '{"auth":{"passwordCredentials":{"username":"' + username + '","password": "' + password + '"},"tenantName": "' + tenant + '"}}'
+	self.data = '{"auth":{"identity":{"methods": ["password"],"password": {"user":{"name": "' + username + '","domain":{"name":"Default"},"password": "' + password + '"}}}}}'
+
 
     def get_token(self):
         get_token = None
         headers = {'Content-Type': 'application/json'}
-        url = self.url + 'tokens'
-        req = urllib2.Request(url, self.data, {'Content-Type': 'application/json'})
+        url = self.url + 'auth/tokens'
+        req = requests.post(url, self.data)
 
         try:
-            f = urllib2.urlopen(req)
+	    f = req.headers
         except Exception as e:
             if ('503' or '404') in str(e):
                 return False, False
 
-        for x in f:
-            d = json.loads(x)
-            token = d['access']['token']['id']
-        f.close()
-        header = {'X-Auth-Token': token}
+        token = f['X-Subject-Token']
+	header = {'X-Auth-Token': token}
+        #header.update({'X-Subject-Token': token})
         return header, token
 
     def validate_token(self, header, token):
-        url = self.url + '/tokens/' + token
+        url = 'http://10.64.173.129:5000/v2.0/tokens/' + token
         req = urllib2.Request(url,None,header)
+	print header	
 
-        try:
-            f = urllib2.urlopen(req)
-        except Exception as e:
+        f = urllib2.urlopen(req)
+        '''
+	except Exception as e:
             if ('503' or '404') in str(e):
                 return False	
+	'''
 
         for x in f:
             d = json.loads(x)
