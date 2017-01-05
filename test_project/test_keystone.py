@@ -34,26 +34,25 @@ class ApiUptime(unittest.TestCase):
         #header.update({'X-Subject-Token': token})
         return header, token
 
-    def validate_token(self, header, token):
-        url = 'http://10.64.173.129:5000/v2.0/tokens/' + token
-        req = urllib2.Request(url,None,header)
-	print header	
 
-        f = urllib2.urlopen(req)
-        '''
-	except Exception as e:
-            if ('503' or '404') in str(e):
-                return False	
-	'''
+    def validate_token(self, header, token):
+        url = self.url + 'auth/tokens'
+        print url
+        req = requests.get(url,header)
+
+        f = req.content
+	#for testing, but failing here with unauthorized
+        print f
 
         for x in f:
             d = json.loads(x)
             resp_token = d['access']['token']['id']
-	    if resp_token != token:
-		f.close()
-		return False
-	    return True
-	f.close()
+            if resp_token != token:
+                f.close()
+                return False
+            return True
+        f.close()
+
 
     def write_status(self, service, status, build_start):
 	    status = {"service": service, "status": status, "timestamp": build_start}
