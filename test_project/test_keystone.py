@@ -31,7 +31,7 @@ class ApiUptime(unittest.TestCase):
 
         token = f['X-Subject-Token']
 	header = {'X-Auth-Token': token}
-        #header.update({'X-Subject-Token': token})
+        header.update({'X-Subject-Token': token})
         return header, token
 
 
