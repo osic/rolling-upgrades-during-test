@@ -38,10 +38,11 @@ class ApiUptime(unittest.TestCase):
     def validate_token(self, header, token):
         url = self.url + 'auth/tokens'
         print url
+	#Failing here with unauthorized
         req = requests.get(url,header)
 
         f = req.content
-	#for testing, but failing here with unauthorized
+	#for testing
         print f
 
         for x in f:
