@@ -30,30 +30,19 @@ class ApiUptime(unittest.TestCase):
                 return False, False
 
         token = f['X-Subject-Token']
-	header = {'X-Auth-Token': token}
-        header.update({'X-Subject-Token': token})
+	header = {'X-Auth-Token': token, 'X-Subject-Token': token}
         return header, token
-
 
     def validate_token(self, header, token):
         url = self.url + 'auth/tokens'
-        print url
-	#Failing here with unauthorized
-        req = requests.get(url,header)
+        req = requests.get(url,headers=header)
 
-        f = req.content
-	#for testing
-        print f
+	f = req.headers
 
-        for x in f:
-            d = json.loads(x)
-            resp_token = d['access']['token']['id']
-            if resp_token != token:
-                f.close()
-                return False
-            return True
-        f.close()
-
+        if token == f['X-Subject-Token']:
+	    return True
+	else:
+	    return False
 
     def write_status(self, service, status, build_start):
 	    status = {"service": service, "status": status, "timestamp": build_start}
@@ -113,7 +102,7 @@ class ApiUptime(unittest.TestCase):
 		self.assertNotEqual(header,False)
 
 		#Validate token
-		validate = self.validate_token(header,token)
+		validate = self.validate_token(header, token)
 		self.assertNotEqual(validate,False)
 	       
 	        #Write to logfile
