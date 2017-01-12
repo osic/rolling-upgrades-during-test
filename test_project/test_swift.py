@@ -117,7 +117,6 @@ class ApiUptime(unittest.TestCase):
 
     def test_create_delete_container(self, conn, service, times, container_name, object_name):
 	output = []
-	total = 0
         start_time = 0
         total_time = 0
         total_down_time = 0
@@ -203,7 +202,6 @@ class ApiUptime(unittest.TestCase):
 
 	    #Aggregating total run time of test
             duration += (float(done_time)-start_time)
-	    total += 1
 
         self.report(conn, service, sum(output),
-                    total, str(build_start), str(datetime.now().strftime("%Y-%m-%dT%H:%M:%S%z")), total_down_time,duration)
+                    len(output), str(build_start), str(datetime.now().strftime("%Y-%m-%dT%H:%M:%S%z")), total_down_time,duration)
