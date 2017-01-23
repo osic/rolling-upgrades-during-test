@@ -95,8 +95,6 @@ class ApiUptime(unittest.TestCase):
 
 	if any(c in str(response) for c in ('201','202')):
             pass
-	elif '401' in str(response):
-	    return str(response)
 	else:
             return str(response)
 
