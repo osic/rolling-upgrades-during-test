@@ -228,10 +228,10 @@ class ApiUptime(unittest.TestCase):
 		    nova_url = self.get_nova_url()
 
                 done_time = time.time()
-                total_down_time += (float(done_time) - start_time)
+                total_down_time += (done_time - start_time)
 
 	    #Aggregating total run time of test
-	    duration += (float(done_time)-start_time)
+	    duration += (done_time-start_time)
 
         self.report(conn, service, sum(output),
                     len(output), str(build_start), str(datetime.now().strftime("%Y-%m-%dT%H:%M:%S%z")), total_down_time, duration)
