@@ -124,10 +124,10 @@ class ApiUptime(unittest.TestCase):
 		#Record downtime accrual and write status
 		sleep(1)
 		done_time = time.time()
-		total_down_time += (float(done_time) - start_time)
+		total_down_time += (done_time - start_time)
 
 	    #Aggregating run time of test
-	    duration += (float(done_time) - start_time)
+	    duration += (done_time - start_time)
 
         self.report(conn, service, sum(output),
                     len(output), str(build_start), 
