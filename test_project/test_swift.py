@@ -188,7 +188,7 @@ class ApiUptime(unittest.TestCase):
 		#Record downtime accrual and write status
 		sleep(1)
                 done_time = time.time()
-		total_down_time += (float(done_time) - start_time)
+		total_down_time += (done_time - start_time)
 
 		#Get another token if necessary
 		if headers == False or new_container or new_object:
@@ -201,7 +201,7 @@ class ApiUptime(unittest.TestCase):
                     swift_url = self.get_swift_url()
 
 	    #Aggregating total run time of test
-            duration += (float(done_time)-start_time)
+            duration += (done_time-start_time)
 
         self.report(conn, service, sum(output),
                     len(output), str(build_start), str(datetime.now().strftime("%Y-%m-%dT%H:%M:%S%z")), total_down_time,duration)
