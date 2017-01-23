@@ -77,10 +77,14 @@ class ApiUptime(unittest.TestCase):
             if '200' in str(response):
                 get = response.json()['server']['status']
                 build_time = int(time.time() - start_time)
-                if build_time > 15 or get == 'ERROR':
+                if build_time > 29 or get == 'ERROR':
                     return get
 	    else:
 		return get
+
+	while build_time <= 29:
+	    build_time = int(time.time() - start_time)
+
 	return get
 
     def write_status(self, service, status, build_start):
