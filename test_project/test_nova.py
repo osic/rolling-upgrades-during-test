@@ -68,6 +68,8 @@ class ApiUptime(unittest.TestCase):
     def _wait_until(self, url, headers):
 	get = None
 	start_time = time.time()
+	build_time = 0
+	avg_build_time = 0
 
 	while get  <> 'ACTIVE':
 	    #Sending requests to OS
@@ -78,14 +80,18 @@ class ApiUptime(unittest.TestCase):
                 get = response.json()['server']['status']
                 build_time = int(time.time() - start_time)
                 if build_time > 29 or get == 'ERROR':
-                    return get
+                    return get, 0
 	    else:
-		return get
+		return get, 0
 
+	#Get average build time
+	avg_build_time = build_time
+
+	#Creating VM every 30 seconds so wait
 	while build_time <= 29:
 	    build_time = int(time.time() - start_time)
 
-	return get
+	return get, avg_build_time
 
     def write_status(self, service, status, build_start):
             status = {"service": service, "status": status, "timestamp": build_start}
@@ -94,6 +100,7 @@ class ApiUptime(unittest.TestCase):
             f.close()
 
     def create_server(self,url,headers,name, image, flavor, data):
+	avg_build_time = 0
 	url = url + '/servers'
 	response = requests.post(url, data=data,headers=headers)
 
@@ -107,8 +114,8 @@ class ApiUptime(unittest.TestCase):
 	#Wait until active
 	response = response.json()
 	self.server_id = response['server']['id']
-        status = self._wait_until(url + '/' + self.server_id, headers)
-	return status
+        status, avg_build_time = self._wait_until(url + '/' + self.server_id, headers)
+	return status, avg_build_time
 
     def delete_server(self, url, headers):
 	url = url + '/servers/' + str(self.server_id)
@@ -116,7 +123,7 @@ class ApiUptime(unittest.TestCase):
 
 	return response
 
-    def report(self, conn, service, success, total, start_time, end_time, down_time, duration):
+    def report(self, conn, service, success, total, start_time, end_time, down_time, duration, avg_build_time):
         success_pct = 100 * (float(success)/total)
 
 	uptime_pct = 100 - round((float(down_time)/duration * 100), 2)
@@ -133,6 +140,7 @@ class ApiUptime(unittest.TestCase):
                 "start_time": start_time,
                 "end_time": end_time,
 		"down_time": down_time,
+		"avg_build_time": avg_build_time,
 		"uptime_pct": uptime_pct}})
         conn.close()
 
@@ -143,6 +151,7 @@ class ApiUptime(unittest.TestCase):
         down_time = None
         server = ''
 	total_down_time = 0
+	avg_build_time = 0
 	server_delete = ''
 	test_finish_time = None
 	duration = 0
@@ -177,10 +186,12 @@ class ApiUptime(unittest.TestCase):
                     self.assertNotEqual(swift_url,False)
 
                 #Create server
-                server = self.create_server(nova_url,headers,name,image,flavor,server_data)
+                server, build_time = self.create_server(nova_url,headers,name,image,flavor,server_data)
 
 		#If status is active send true else send false
                 self.assertTrue(server == 'ACTIVE')
+
+		avg_build_time += build_time
 
 		#Delete server
                 server_delete = self.delete_server(nova_url, headers)
@@ -237,5 +248,7 @@ class ApiUptime(unittest.TestCase):
 	    #Aggregating total run time of test
 	    duration += (done_time-start_time)
 
+	avg_build_time = avg_build_time/sum(output)
+
         self.report(conn, service, sum(output),
-                    len(output), str(build_start), str(datetime.now().strftime("%Y-%m-%dT%H:%M:%S%z")), total_down_time, duration)
+                    len(output), str(build_start), str(datetime.now().strftime("%Y-%m-%dT%H:%M:%S%z")), total_down_time, duration, avg_build_time)
