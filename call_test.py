@@ -38,14 +38,15 @@ class ArgumentParser(argparse.ArgumentParser):
 
 def entry_point():
     cl_args = ArgumentParser().parse_args()
-
+    
+    print sys.prefix
     # Check if a process is already running for script
     checkRunningPid()
 
     # Initialize Config Variables
     config = SafeConfigParser()
-    if os.path.isfile("../tempest/etc/tempest.conf"):
-        config.read("../tempest/etc/tempest.conf") #initialize environment from tempest.conf
+    if os.path.isfile("../etc/tempest.conf"):
+        config.read("../etc/tempest.conf") #initialize environment from tempest.conf
         user = config.get("auth", "admin_username")
         password = config.get("auth", "admin_password")
         tenant = config.get("auth", "admin_project_name")
