@@ -135,7 +135,6 @@ def checkRunningPid():
         r_pid = int(open(pid_file,'r+').readlines()[0])
         ps_command = "ps -o command= %s | grep -Eq 'python call_test'" % r_pid
         process_exit = os.system(ps_command)
-	sys.exit("Looks like process is already running please kill pid: kill " + pid)
         if process_exit == 0:
 	    sys.exit("Looks like process is already running please kill pid: kill " + pid)
         else:
