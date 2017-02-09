@@ -39,7 +39,6 @@ class ArgumentParser(argparse.ArgumentParser):
 def entry_point():
     cl_args = ArgumentParser().parse_args()
     
-    print sys.prefix
     # Check if a process is already running for script
     checkRunningPid()
 
