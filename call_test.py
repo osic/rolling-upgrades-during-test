@@ -113,13 +113,13 @@ def entry_point():
     outputs = [pipe.recv() for pipe in pipes]
     final_output = {k: v for d in outputs for k, v in d.items()}
     
-    if len(services) == 1:
-        output_file = service + '_' + output_file
+    #Will tweak later
+    #if len(services) == 1:
+    #    output_file = service + '_' + output_file
 
     if output_file is None or output_file == '':
         print json.dumps(final_output)
     else:
-        output_path = 'output/'
         with open(output_file, 'w') as out:
 	    print json.dumps(final_output)
             out.write(json.dumps(final_output))
