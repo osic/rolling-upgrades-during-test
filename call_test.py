@@ -120,7 +120,7 @@ def entry_point():
         print json.dumps(final_output)
     else:
         output_path = 'output/'
-        with open(output_path + output_file, 'w') as out:
+        with open(output_file, 'w') as out:
 	    print json.dumps(final_output)
             out.write(json.dumps(final_output))
 	    print "Output here: " + output_path + output_file
