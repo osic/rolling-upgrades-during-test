@@ -123,7 +123,7 @@ def entry_point():
         with open(output_file, 'w') as out:
 	    print json.dumps(final_output)
             out.write(json.dumps(final_output))
-	    print "Output here: " + output_path + output_file
+	    print "Output here: " + output_file
 
 
 def checkRunningPid():
