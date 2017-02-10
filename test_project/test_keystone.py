@@ -46,7 +46,7 @@ class ApiUptime(unittest.TestCase):
 
     def write_status(self, service, status, build_start):
 	    status = {"service": service, "status": status, "timestamp": build_start}
-            f = open('%s/output/keystone_status.json' % os.environ['HOME'],'a')
+            f = open('../../output/keystone_status.json','a')
             f.write(json.dumps(status) + "\n")
             f.close()
 
@@ -85,7 +85,7 @@ class ApiUptime(unittest.TestCase):
             times = xrange(times)
         pipes = []
 
-	open('%s/output/keystone_status.json' % os.environ['HOME'],'w')
+	open('../../output/keystone_status.json','w')
 
 	build_start = str(datetime.now().strftime("%Y-%m-%dT%H:%M:%S%z"))
 
