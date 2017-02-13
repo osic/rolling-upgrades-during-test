@@ -95,7 +95,7 @@ class ApiUptime(unittest.TestCase):
 
     def write_status(self, service, status, build_start):
             status = {"service": service, "status": status, "timestamp": build_start}
-            f = open('../../output/nova_status.json','a')
+            f = open('../output/nova_status.json','a')
             f.write(json.dumps(status) + "\n")
             f.close()
 
@@ -163,7 +163,7 @@ class ApiUptime(unittest.TestCase):
         else:
             times = xrange(times)
 
-        open('../../output/nova_status.json','w')
+        open('../output/nova_status.json','w')
 
 	headers  = self.get_token()
         nova_url = self.get_nova_url()
