@@ -209,27 +209,6 @@ class ApiUptime(unittest.TestCase):
 
 		if '401' in server or '401' in server_delete:
 		    headers = False
-                elif any(c in str(server) for c in ('201','202')):
-                    #Delete server
-		    server_delete = self.delete_server(nova_url, headers)
-
-		    #If server doesn't delete we need to try until it does
-		    while '204' not in server_delete:
-                        #Write to status log
-                        self.write_status(service, 0, str(datetime.now().strftime("%Y-%m-%dT%H:%M:%S%z")))
-                        output.append(False)
-
-                        if conn.poll() and conn.recv() == "STOP":
-                            break
-
-                        if '401' in server_delete:
-                            print "Attempting to retrieve token and url"
-                            headers = self.get_token()
-                            nova_url = self.get_nova_url()
-
-		        print "Server delete failed.  Attempting to delete server"
-			sleep(10)
-                        server_delete = self.delete_server(nova_url, headers)
 
                 #Record down time
                 status_timestamp = str(datetime.now().strftime("%Y-%m-%dT%H:%M:%S%z"))
