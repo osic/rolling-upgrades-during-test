@@ -27,10 +27,10 @@ class ApiUptime(unittest.TestCase):
             f = urllib2.urlopen(req)
 	except Exception as e:
 	    if any(c in str(e) for c in ('503','404')):
-		self.error_output = str(e)
+		self.error_output = str(e) + " line 30"
 		return False
 	    else:
-		self.error_output = str(e)
+		self.error_output = str(e) + " line 33"
 		return False		
 
         for x in f:
@@ -50,10 +50,10 @@ class ApiUptime(unittest.TestCase):
             f = urllib2.urlopen(req)
         except Exception as e:
 	    if any(c in str(e) for c in ('503','404')):
-		self.error_output = str(e)
+		self.error_output = str(e) + " line 53"
                 return False
 	    else:
-		self.error_output = str(e)
+		self.error_output = str(e) + " line 56"
 		return False
 
 	try:
@@ -115,10 +115,10 @@ class ApiUptime(unittest.TestCase):
 	if any(c in str(response) for c in ('201','202')):
             pass
         elif '401' in str(response):
-	    self.error_output = str(response)
+	    self.error_output = str(response) + " line 118"
             return str(response)
 	else:
-	    self.error_output = str(response)
+	    self.error_output = str(response) + " line 121"
             return str(response)
 
 	#Wait until active
@@ -220,7 +220,7 @@ class ApiUptime(unittest.TestCase):
             except Exception as e:
 	   	#print "Failed Nova: " + str(e)
 		status = 0
-		self.error_output = str(e)
+		self.error_output = str(e) + " line 223"
 
 		if '401' in server or '401' in server_delete:
 		    headers = False
