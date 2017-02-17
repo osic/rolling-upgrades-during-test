@@ -180,6 +180,7 @@ class ApiUptime(unittest.TestCase):
 		sleep(1)
                 done_time = time.time()
 		status = 1
+		error = None
 	    except Exception as e:
 		#Print error
 		status = 0
