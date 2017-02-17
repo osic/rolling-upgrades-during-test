@@ -204,8 +204,11 @@ class ApiUptime(unittest.TestCase):
 
 		#Done for aggregating total test duration
 		done_time = time.time()
+		error = None
             except Exception as e:
-	   	print "Failed Nova: " + str(e)
+	   	#print "Failed Nova: " + str(e)
+		status = 0
+		error = str(e)
 
 		if '401' in server or '401' in server_delete:
 		    headers = False
@@ -214,7 +217,7 @@ class ApiUptime(unittest.TestCase):
                 status_timestamp = str(datetime.now().strftime("%Y-%m-%dT%H:%M:%S%z"))
 
                 #Write to status log
-                self.write_status(service, 0, status_timestamp)
+                self.write_status(service, 0, status_timestamp, "Failed Nova: " + str(e))
 		output.append(False)
 
 		if headers == False:
@@ -227,6 +230,7 @@ class ApiUptime(unittest.TestCase):
 
 	    #Aggregating total run time of test
 	    duration += (done_time-start_time)
+	    self.write_status(service, status,status_timestamp,error,total_down_time,duration)
 
 	avg_build_time = avg_build_time/sum(output)
 
