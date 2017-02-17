@@ -199,7 +199,8 @@ class ApiUptime(unittest.TestCase):
 		self.assertIn('204',server_delete)
 
                 #Write to status log
-                self.write_status(service, 1, str(datetime.now().strftime("%Y-%m-%dT%H:%M:%S%z")))
+		status_timestamp = str(datetime.now().strftime("%Y-%m-%dT%H:%M:%S%z"))
+                #self.write_status(service, 1, str(datetime.now().strftime("%Y-%m-%dT%H:%M:%S%z")))
                 output.append(True)
 
 		#Done for aggregating total test duration
