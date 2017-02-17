@@ -89,8 +89,8 @@ class ApiUptime(unittest.TestCase):
         return response
 
 
-    def write_status(self, service, status, build_start):
-	    status = {"service": service, "status": status, "timestamp": build_start}
+    def write_status(self, service, status, build_start, error, total_down, duration, test_start ):
+	    status = {"service": service, "status": status, "timestamp": build_start, "error": error, "total_down": total_down, "duration": duration, "time_run_started": test_start}
             f = open('../output/swift_status.json','a')
             f.write(json.dumps(status) + "\n")
             f.close()
@@ -172,19 +172,24 @@ class ApiUptime(unittest.TestCase):
 		container_delete = self.delete_container(swift_url, headers, container_name)
 		self.assertIn('204',container_delete)
 
-		self.write_status(service, 1, datetime.now().strftime("%Y-%m-%dT%H:%M:%S%z"))
+		status_timestamp = datetime.now().strftime("%Y-%m-%dT%H:%M:%S%z")
+		#self.write_status(service, 1, datetime.now().strftime("%Y-%m-%dT%H:%M:%S%z"))
 
 		#Send Success
 		output.append(True)
 		sleep(1)
                 done_time = time.time()
+		status = 1
 	    except Exception as e:
 		#Print error
+		status = 0
+		error = str(e)
 		print "Failed Swift: " + str(e)
 
                 #Send Fail and write status
                 output.append(False)
-		self.write_status(service, 0, datetime.now().strftime("%Y-%m-%dT%H:%M:%S%z"))
+		status_timestamp = datetime.now().strftime("%Y-%m-%dT%H:%M:%S%z")
+		#self.write_status(service, 0, datetime.now().strftime("%Y-%m-%dT%H:%M:%S%z"))
 
 		#Record downtime accrual and write status
 		sleep(1)
@@ -203,6 +208,7 @@ class ApiUptime(unittest.TestCase):
 
 	    #Aggregating total run time of test
             duration += (done_time-start_time)
+	    self.write_status(service,status,status_timestamp,error,total_down_time,duration,str(build_start))
 
         self.report(conn, service, sum(output),
                     len(output), str(build_start), str(datetime.now().strftime("%Y-%m-%dT%H:%M:%S%z")), total_down_time,duration)
