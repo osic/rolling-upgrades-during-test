@@ -44,8 +44,8 @@ class ApiUptime(unittest.TestCase):
 	else:
 	    return False
 
-    def write_status(self, service, status, build_start):
-	    status = {"service": service, "status": status, "timestamp": build_start}
+    def write_status(self, service, status, build_start, error, total_down, duration, test_start ):
+	    status = {"service": service, "status": status, "timestamp": build_start, "error": error, "total_down": total_down, "duration": duration, "time_run_started": test_start}
             f = open('../output/keystone_status.json','a')
             f.write(json.dumps(status) + "\n")
             f.close()
@@ -107,17 +107,23 @@ class ApiUptime(unittest.TestCase):
 		self.assertNotEqual(validate,False)
 	       
 	        #Write to logfile
-		self.write_status(service, 1, str(datetime.now().strftime("%Y-%m-%dT%H:%M:%S%z")))
+		status_timestamp = str(datetime.now().strftime("%Y-%m-%dT%H:%M:%S%z"))
+		#self.write_status(service, 1, str(datetime.now().strftime("%Y-%m-%dT%H:%M:%S%z")))
 
                 #Send success
                 output.append(True)
 
 		sleep(1)
 		done_time = time.time()
+		status = 1
+		error = None
 	    except Exception as e:
 		print "Failed Keystone: " + str(e)
-
-		self.write_status(service, 0, str(datetime.now().strftime("%Y-%m-%dT%H:%M:%S%z")))
+		status = 0
+		error = str(e)
+		
+		status_timestamp = str(datetime.now().strftime("%Y-%m-%dT%H:%M:%S%z"))
+		#self.write_status(service, 0, str(datetime.now().strftime("%Y-%m-%dT%H:%M:%S%z")))
 
                 #Send Fail
                 output.append(False)
@@ -126,6 +132,7 @@ class ApiUptime(unittest.TestCase):
 		sleep(1)
 		done_time = time.time()
 		total_down_time += (done_time - start_time)
+		self.write_status(service,status,status_timestamp,error,total_down_time,duration,str(build_start))
 
 	    #Aggregating run time of test
 	    duration += (done_time - start_time)
