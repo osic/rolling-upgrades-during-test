@@ -244,7 +244,7 @@ class ApiUptime(unittest.TestCase):
 	    duration += (done_time-start_time)
 	    self.write_status(service,status,status_timestamp,self.error_output,total_down_time,duration,str(build_start))
 
-	avg_build_time = avg_build_time/sum(output)
+	avg_build_time = avg_build_time/1
 
         self.report(conn, service, sum(output),
                     len(output), str(build_start), str(datetime.now().strftime("%Y-%m-%dT%H:%M:%S%z")), total_down_time, duration, avg_build_time)
