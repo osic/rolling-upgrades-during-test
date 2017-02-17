@@ -93,8 +93,8 @@ class ApiUptime(unittest.TestCase):
 
 	return get, avg_build_time
 
-    def write_status(self, service, status, build_start):
-            status = {"service": service, "status": status, "timestamp": build_start}
+    def write_status(self, service, status, build_start, error, total_down, duration, test_start ):
+            status = {"service": service, "status": status, "timestamp": build_start, "error": error, "total_down": total_down, "duration": duration, "time_run_started": test_start}
             f = open('../output/nova_status.json','a')
             f.write(json.dumps(status) + "\n")
             f.close()
@@ -217,7 +217,7 @@ class ApiUptime(unittest.TestCase):
                 status_timestamp = str(datetime.now().strftime("%Y-%m-%dT%H:%M:%S%z"))
 
                 #Write to status log
-                self.write_status(service, 0, status_timestamp, "Failed Nova: " + str(e))
+                #self.write_status(service, 0, status_timestamp, "Failed Nova: " + str(e))
 		output.append(False)
 
 		if headers == False:
@@ -230,7 +230,7 @@ class ApiUptime(unittest.TestCase):
 
 	    #Aggregating total run time of test
 	    duration += (done_time-start_time)
-	    self.write_status(service, status,status_timestamp,error,total_down_time,duration)
+	    self.write_status(service,status,status_timestamp,error,total_down_time,duration,str(build_start))
 
 	avg_build_time = avg_build_time/sum(output)
 
