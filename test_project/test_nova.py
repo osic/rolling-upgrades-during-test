@@ -15,6 +15,7 @@ class ApiUptime(unittest.TestCase):
 	self.server_id = None
 	self.url = auth_url + '/'
         self.data = '{"auth":{"passwordCredentials":{"username":"' + username + '","password": "' + password + '"},"tenantName": "' + tenant + '"}}'
+	self.error_output = None
 
     def get_token(self):
         get_token = None
@@ -26,7 +27,11 @@ class ApiUptime(unittest.TestCase):
             f = urllib2.urlopen(req)
 	except Exception as e:
 	    if any(c in str(e) for c in ('503','404')):
+		self.error_output = str(e)
 		return False
+	    else
+		self.error_output = str(e)
+		return False		
 
         for x in f:
             d = json.loads(x)
@@ -44,9 +49,12 @@ class ApiUptime(unittest.TestCase):
         try:
             f = urllib2.urlopen(req)
         except Exception as e:
-	    print e
 	    if any(c in str(e) for c in ('503','404')):
+		self.error_output = str(e)
                 return False
+	    else
+		self.error_output = str(e)
+		return False
 
 	try:
             for x in f:
@@ -107,8 +115,10 @@ class ApiUptime(unittest.TestCase):
 	if any(c in str(response) for c in ('201','202')):
             pass
         elif '401' in str(response):
+	    self.error_output = str(response)
             return str(response)
 	else:
+	    self.error_output = str(response)
             return str(response)
 
 	#Wait until active
@@ -210,7 +220,7 @@ class ApiUptime(unittest.TestCase):
             except Exception as e:
 	   	#print "Failed Nova: " + str(e)
 		status = 0
-		error = str(e)
+		self.error_output = str(e)
 
 		if '401' in server or '401' in server_delete:
 		    headers = False
@@ -232,7 +242,7 @@ class ApiUptime(unittest.TestCase):
 
 	    #Aggregating total run time of test
 	    duration += (done_time-start_time)
-	    self.write_status(service,status,status_timestamp,error,total_down_time,duration,str(build_start))
+	    self.write_status(service,status,status_timestamp,self.error_output,total_down_time,duration,str(build_start))
 
 	avg_build_time = avg_build_time/sum(output)
 
