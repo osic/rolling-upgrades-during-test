@@ -145,6 +145,7 @@ class ApiUptime(unittest.TestCase):
 	    start_time = time.time()
 
             if conn.poll() and conn.recv() == "STOP":
+		print "Ending Swift during testing."
                 break
 
 	    try:
