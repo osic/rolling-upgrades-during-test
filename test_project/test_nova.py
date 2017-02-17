@@ -206,6 +206,7 @@ class ApiUptime(unittest.TestCase):
 		#Done for aggregating total test duration
 		done_time = time.time()
 		error = None
+		status = 1
             except Exception as e:
 	   	#print "Failed Nova: " + str(e)
 		status = 0
