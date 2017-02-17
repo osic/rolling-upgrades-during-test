@@ -29,7 +29,7 @@ class ApiUptime(unittest.TestCase):
 	    if any(c in str(e) for c in ('503','404')):
 		self.error_output = str(e)
 		return False
-	    else
+	    else:
 		self.error_output = str(e)
 		return False		
 
@@ -52,7 +52,7 @@ class ApiUptime(unittest.TestCase):
 	    if any(c in str(e) for c in ('503','404')):
 		self.error_output = str(e)
                 return False
-	    else
+	    else:
 		self.error_output = str(e)
 		return False
 
