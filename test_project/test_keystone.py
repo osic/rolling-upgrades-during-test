@@ -91,6 +91,7 @@ class ApiUptime(unittest.TestCase):
 
 	for _ in times:
             if conn.poll() and conn.recv() == "STOP":
+		print "Ending Keystone during testing."
                 break
 
 	    start_time = time.time()
