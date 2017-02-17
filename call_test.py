@@ -71,6 +71,8 @@ def entry_point():
     object_name = config.get("openstack", "object_name")
     daemon_file = config.get("openstack", "daemon_file") or os.path.join(sys.prefix, "during.uptime.stop")
     output_file = cl_args.output_file or config.get("openstack", "output_file")
+	
+    print "To stop script please create during.uptime.stop file in: " + sys.prefix
     
     if cl_args.daemon and os.path.exists(daemon_file):
         os.remove(daemon_file)
