@@ -27,7 +27,7 @@ class ApiUptime(unittest.TestCase):
 	    f = req.headers
         except Exception as e:
             if ('503' or '404') in str(e):
-                return False, False
+                return False, False	        
 
         token = f['X-Subject-Token']
 	header = {'X-Auth-Token': token, 'X-Subject-Token': token}
@@ -132,10 +132,10 @@ class ApiUptime(unittest.TestCase):
 		sleep(1)
 		done_time = time.time()
 		total_down_time += (done_time - start_time)
-		self.write_status(service,status,status_timestamp,error,total_down_time,duration,str(build_start))
 
 	    #Aggregating run time of test
 	    duration += (done_time - start_time)
+            self.write_status(service,status,status_timestamp,error,total_down_time,duration,str(build_start))
 
         self.report(conn, service, sum(output),
                     len(output), str(build_start), 
