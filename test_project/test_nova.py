@@ -116,10 +116,10 @@ class ApiUptime(unittest.TestCase):
             pass
         elif '401' in str(response):
 	    self.error_output = str(response) + " line 118"
-            return str(response)
+            return str(response), avg_build_time
 	else:
 	    self.error_output = str(response) + " line 121"
-            return str(response)
+            return str(response), avg_build_time
 
 	#Wait until active
 	response = response.json()
@@ -220,7 +220,7 @@ class ApiUptime(unittest.TestCase):
             except Exception as e:
 	   	#print "Failed Nova: " + str(e)
 		status = 0
-		self.error_output = str(e) + " line 223"
+		self.error_output += ", " + str(e) + " line 223"
 
 		if '401' in server or '401' in server_delete:
 		    headers = False
@@ -241,6 +241,7 @@ class ApiUptime(unittest.TestCase):
                 total_down_time += (done_time - start_time)
 
 	    #Aggregating total run time of test
+	    self.error_output = None
 	    duration += (done_time-start_time)
 	    self.write_status(service,status,status_timestamp,self.error_output,total_down_time,duration,str(build_start))
 
