@@ -185,6 +185,9 @@ class ApiUptime(unittest.TestCase):
             if conn.poll() and conn.recv() == "STOP":
 		print "Ending Nova during testing."
                 break
+	    elif os.path.isfile('/usr/during.novauptime.stop'):
+		print "Ending Nova during testing."
+                break
 
 	    start_time = time.time()
 
