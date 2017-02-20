@@ -220,7 +220,11 @@ class ApiUptime(unittest.TestCase):
             except Exception as e:
 	   	#print "Failed Nova: " + str(e)
 		status = 0
-		self.error_output += self.error_output + ", " + str(e) + " line 223"
+		
+		if self.error_output:
+		    self.error_output += self.error_output + ", " + str(e) + " line 223"
+		else:
+		    self.error_output = str(e) + " line 227"
 
 		if '401' in server or '401' in server_delete:
 		    headers = False
