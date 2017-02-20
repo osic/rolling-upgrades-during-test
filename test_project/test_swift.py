@@ -153,6 +153,9 @@ class ApiUptime(unittest.TestCase):
             if conn.poll() and conn.recv() == "STOP":
 		print "Ending Swift during testing."
                 break
+	    elif os.path.isfile('/usr/during.uptime.stop'):
+		print "Ending Swift during testing."
+                break
 
 	    try:
                 if headers == False:
