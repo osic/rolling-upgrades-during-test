@@ -27,7 +27,10 @@ class ApiUptime(unittest.TestCase):
 	    f = req.headers
         except Exception as e:
             if ('503' or '404') in str(e):
-                return False, False	        
+                return False, False
+	    else:
+	        print "Error in Keystone line 32: " + str(e)				
+                return False, False
 
         token = f['X-Subject-Token']
 	header = {'X-Auth-Token': token, 'X-Subject-Token': token}
