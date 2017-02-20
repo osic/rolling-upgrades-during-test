@@ -96,6 +96,9 @@ class ApiUptime(unittest.TestCase):
             if conn.poll() and conn.recv() == "STOP":
 		print "Ending Keystone during testing."
                 break
+	    elif os.path.isfile('/usr/during.uptime.stop'):
+		print "Ending Keystone during testing."
+                break
 
 	    start_time = time.time()
 
