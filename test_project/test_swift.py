@@ -26,6 +26,9 @@ class ApiUptime(unittest.TestCase):
 	except Exception as e:
 	    if any(c in str(e) for c in ('503','404')):
 		return False
+	    else:
+	        print "Error on line 30: " + str(e)
+                return False
 
         for x in f:
             d = json.loads(x)
@@ -45,6 +48,9 @@ class ApiUptime(unittest.TestCase):
         except Exception as e:
 	    print e 
 	    if any(c in str(e) for c in ('503','404')):
+                return False
+	    else:
+	        print "Error on line 53: " + str(e)
                 return False
 
 	try:
