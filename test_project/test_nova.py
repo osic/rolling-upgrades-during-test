@@ -229,7 +229,9 @@ class ApiUptime(unittest.TestCase):
 		else:
 		    self.error_output = str(e) + " line 227"
 
-		if '401' in server or '401' in server_delete:
+		if server == None:
+		    pass
+		elif '401' in server or '401' in server_delete:
 		    headers = False
 
                 #Record down time
