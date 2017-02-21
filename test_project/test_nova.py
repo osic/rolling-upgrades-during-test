@@ -223,7 +223,7 @@ class ApiUptime(unittest.TestCase):
             except Exception as e:
 	   	#print "Failed Nova: " + str(e)
 		status = 0
-		print str(e)
+		print self.error_output + ", " + str(e)
 		
 		if self.error_output:
 		    self.error_output += self.error_output + ", " + str(e) + " line 223"
