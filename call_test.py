@@ -34,13 +34,19 @@ class ArgumentParser(argparse.ArgumentParser):
         self.add_argument(
             "-o", "--output-file", metavar="<path to output file>",
             required=False, default=None)
+	
+        self.add_argument(
+            "-m", "--multiprocess", required=False, action='store_true')
 
 
 def entry_point():
     cl_args = ArgumentParser().parse_args()
     
     # Check if a process is already running for script
-    checkRunningPid()
+    if cl_args.multiprocess:
+        pass
+    else:
+        checkRunningPid()
 
     # Initialize Config Variables
     config = SafeConfigParser()
