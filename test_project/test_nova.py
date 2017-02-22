@@ -88,8 +88,9 @@ class ApiUptime(unittest.TestCase):
                 get = response.json()['server']['status']
                 build_time = int(time.time() - start_time)
                 if build_time > 29 or get == 'ERROR':
-                    return get, 0
+                    return str(get), 0
 	    else:
+		get = 'ERROR'
 		return get, 0
 
 	#Get average build time
@@ -118,9 +119,9 @@ class ApiUptime(unittest.TestCase):
             self.error_output = str(response) + " creating server on line 118"
             return str(response), avg_build_time
         elif '500' in str(response):
+            self.error_output = str(response) + " creating server on line 122"
             response = response.json()
             self.server_id = response['server']['id']
-            self.error_output = str(response) + " creating server on line 123"
             return 'ERROR', avg_build_time
 	else:
             self.error_output = str(response) + " creating server on line 126"
@@ -142,7 +143,7 @@ class ApiUptime(unittest.TestCase):
 	response = str(requests.delete(url, headers=headers))
 	
 	if '204' not in response:
-	    self.error_output = "Error deleting server: " + self.server_id + " on line 145"
+	    self.error_output = "Error deleting server: " + self.server_id + " on line 146"
 
 	return response
 
@@ -241,15 +242,15 @@ class ApiUptime(unittest.TestCase):
 		
 		if self.error_output != None:
 		    print self.error_output + ", " + str(e)
-		    self.error_output = self.error_output + ", " + str(e) + " line 223"
+		    self.error_output = self.error_output + ", " + str(e) + " line 245"
 		else:
-		    self.error_output = str(e) + " line 227"
+		    self.error_output = str(e) + " line 247"
 		
 		if server == None:
 		    pass
 		elif '401' in server or '401' in server_delete:
 		    headers = False
-                elif self.server_id:
+                elif any(c in str(server) for c in ('ACTIVE','ERROR','BUILD')):
                     #Delete server
 		    server_delete = self.delete_server(nova_url, headers)
 
