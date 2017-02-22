@@ -140,6 +140,9 @@ class ApiUptime(unittest.TestCase):
     def delete_server(self, url, headers):
 	url = url + '/servers/' + str(self.server_id)
 	response = str(requests.delete(url, headers=headers))
+	
+	if '204' not in response:
+	    self.error_output = "Error deleting server: " + self.server_id + " on line 145"
 
 	return response
 
