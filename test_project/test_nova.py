@@ -250,7 +250,7 @@ class ApiUptime(unittest.TestCase):
 		    pass
 		elif '401' in server or '401' in server_delete:
 		    headers = False
-                elif any(c in str(server) for c in ('ACTIVE','ERROR','BUILD')):
+                elif any(c in str(server) for c in ('ACTIVE','ERROR','BUILD')) or self.server_id:
                     #Delete server
 		    server_delete = self.delete_server(nova_url, headers)
 
