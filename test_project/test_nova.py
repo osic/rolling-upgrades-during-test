@@ -114,11 +114,21 @@ class ApiUptime(unittest.TestCase):
 
 	if any(c in str(response) for c in ('201','202')):
             pass
-        elif '401' in str(response):
-	    self.error_output = str(response) + " line 118"
+        elif any(c in str(response) for c in ('401','403','400')):
+            self.error_output = str(response) + " creating server on line 118"
             return str(response), avg_build_time
+        elif '500' in str(response):
+            response = response.json()
+            self.server_id = response['server']['id']
+            self.error_output = str(response) + " creating server on line 123"
+            return 'ERROR', avg_build_time
 	else:
-	    self.error_output = str(response) + " line 121"
+            self.error_output = str(response) + " creating server on line 126"
+            try:
+                response = response.json()
+                self.server_id = response['server']['id']
+            except Exception as e:
+                pass
             return str(response), avg_build_time
 
 	#Wait until active
@@ -201,6 +211,7 @@ class ApiUptime(unittest.TestCase):
 
                 #Create server
                 server, build_time = self.create_server(nova_url,headers,name,image,flavor,server_data)
+                print "server create: " + str(server)
 
 		#If status is active send true else send false
                 self.assertTrue(server == 'ACTIVE')
@@ -209,6 +220,7 @@ class ApiUptime(unittest.TestCase):
 
 		#Delete server
                 server_delete = self.delete_server(nova_url, headers)
+	        print "server delete: " + str(server_delete)
 		self.assertIn('204',server_delete)
 
                 #Write to status log
@@ -223,9 +235,9 @@ class ApiUptime(unittest.TestCase):
             except Exception as e:
 	   	#print "Failed Nova: " + str(e)
 		status = 0
-		print self.error_output + ", " + str(e)
 		
 		if self.error_output != None:
+		    print self.error_output + ", " + str(e)
 		    self.error_output = self.error_output + ", " + str(e) + " line 223"
 		else:
 		    self.error_output = str(e) + " line 227"
@@ -234,7 +246,7 @@ class ApiUptime(unittest.TestCase):
 		    pass
 		elif '401' in server or '401' in server_delete:
 		    headers = False
-                elif any(c in str(server) for c in ('201','202')):
+                elif self.server_id:
                     #Delete server
 		    server_delete = self.delete_server(nova_url, headers)
 
@@ -285,6 +297,7 @@ class ApiUptime(unittest.TestCase):
 	    duration += (done_time-start_time)
 	    self.write_status(service,status,status_timestamp,self.error_output,total_down_time,duration,str(build_start))
             self.error_output = None
+	    self.server_id = None
 
 	avg_build_time = avg_build_time/1
 
