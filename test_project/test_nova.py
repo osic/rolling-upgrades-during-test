@@ -225,8 +225,8 @@ class ApiUptime(unittest.TestCase):
 		status = 0
 		print self.error_output + ", " + str(e)
 		
-		if self.error_output:
-		    self.error_output += self.error_output + ", " + str(e) + " line 223"
+		if self.error_output != None:
+		    self.error_output = self.error_output + ", " + str(e) + " line 223"
 		else:
 		    self.error_output = str(e) + " line 227"
 		
@@ -234,6 +234,37 @@ class ApiUptime(unittest.TestCase):
 		    pass
 		elif '401' in server or '401' in server_delete:
 		    headers = False
+                elif any(c in str(server) for c in ('201','202')):
+                    #Delete server
+		    server_delete = self.delete_server(nova_url, headers)
+
+		    #If server doesn't delete we need to try until it does
+		    while '204' not in server_delete:
+			#Gathering for logs
+			status_timestamp = str(datetime.now().strftime("%Y-%m-%dT%H:%M:%S%z"))
+			done_time = time.time()
+                        total_down_time += (done_time - start_time)
+			duration += (done_time-start_time)
+			self.error_output = str(server_delete) + " trying to delete server on fail"
+
+                        #Write to status log
+                        self.write_status(service,status,status_timestamp,self.error_output,total_down_time,duration,str(build_start))
+                        output.append(False)
+
+                        if conn.poll() and conn.recv() == "STOP":
+                            break
+	                elif os.path.isfile('/usr/during.uptime.stop'):
+		            print "Ending Nova during testing."
+                            break
+
+                        if '401' in server_delete:
+                            print "Attempting to retrieve token and url"
+                            headers = self.get_token()
+                            nova_url = self.get_nova_url()
+
+		        print "Server delete failed.  Attempting to delete server"
+			sleep(5)
+                        server_delete = self.delete_server(nova_url, headers)
 
                 #Record down time
                 status_timestamp = str(datetime.now().strftime("%Y-%m-%dT%H:%M:%S%z"))
