@@ -41,7 +41,7 @@ class ApiUptime(unittest.TestCase):
         return header
 
     def get_nova_url(self):
-	swift_url = None
+	nova_url = None
         headers = {'Content-Type': 'application/json'}
         url = self.url + 'tokens'
         req = urllib2.Request(url, self.data, {'Content-Type': 'application/json'})
