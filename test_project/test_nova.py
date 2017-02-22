@@ -197,7 +197,7 @@ class ApiUptime(unittest.TestCase):
 		    self.assertNotEqual(headers,False)
                 if nova_url == False:
                     print "Please check if you have Nova installed."
-                    self.assertNotEqual(swift_url,False)
+                    self.assertNotEqual(nova_url,False)
 
                 #Create server
                 server, build_time = self.create_server(nova_url,headers,name,image,flavor,server_data)
