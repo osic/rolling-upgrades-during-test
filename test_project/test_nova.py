@@ -110,7 +110,14 @@ class ApiUptime(unittest.TestCase):
 
 
     def _delete_server_list(self, nova_url, headers, name=None):
-        response = requests.get(nova_url + 'servers', headers=headers)
+	status = True
+	try:
+            response = requests.get(nova_url + 'servers', headers=headers)
+	except Exception as e:
+	    print "Received: " + str(e) + " trying to delete server list"
+	    self.error_output += "Received: " + str(e) + " trying to delete server list"
+	    status = False
+	    return status
 
 	while any(c in str(response) for c in ('201','200','202')):
 
@@ -123,8 +130,8 @@ class ApiUptime(unittest.TestCase):
             if '401' in str(response):
                 print "Getting token, it may have expired."
                 self.headers = self.get_token()
-                return True
-            return False
+                return status
+            return status
 
 
     def create_server(self,url,headers,name, image, flavor, data):
@@ -272,9 +279,10 @@ class ApiUptime(unittest.TestCase):
 		    pass
 		elif '401' in server or '401' in server_delete:
 		    headers = False
-	        elif any(c in str(server) for c in ('403','500')):
+	        elif any(c in str(server) for c in ('403','500','503')):
 		    #If it is getting forbidden, there may be a limits issue
 		    self._delete_server_list(nova_url, headers, name)
+		    sleep(1)
                 elif any(c in str(server) for c in ('ACTIVE','ERROR','BUILD')) or self.server_id:
                     #Delete server
 		    server_delete = self.delete_server(nova_url, headers)
