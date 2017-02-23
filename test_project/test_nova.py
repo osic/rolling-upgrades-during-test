@@ -119,9 +119,12 @@ class ApiUptime(unittest.TestCase):
             self.error_output = str(response) + " creating server on line 118"
             return str(response), avg_build_time
         elif '500' in str(response):
-            self.error_output = str(response) + " creating server on line 122"
-            response = response.json()
-            self.server_id = response['server']['id']
+            self.error_output = str(response) + " creating server on line 122 (500)"
+	    try:
+                response = response.json()
+                self.server_id = response['server']['id']
+            except Exception as e:
+	        pass
             return 'ERROR', avg_build_time
 	else:
             self.error_output = str(response) + " creating server on line 126"
@@ -139,12 +142,14 @@ class ApiUptime(unittest.TestCase):
 	return status, avg_build_time
 
     def delete_server(self, url, headers):
-	url = url + '/servers/' + str(self.server_id)
-	response = str(requests.delete(url, headers=headers))
+	if self.server_id = None
+	    return '204'
+	else:
+	    url = url + '/servers/' + str(self.server_id)
+	    response = str(requests.delete(url, headers=headers))
 	
-	if '204' not in response:
-	    self.error_output = "Error deleting server: " + self.server_id + " on line 146"
-
+	    if '204' not in response:
+	        self.error_output = "Error deleting server: " + self.server_id + " on line 146"
 	return response
 
     def report(self, conn, service, success, total, start_time, end_time, down_time, duration, avg_build_time):
