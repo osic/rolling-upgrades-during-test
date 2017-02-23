@@ -122,7 +122,7 @@ class ApiUptime(unittest.TestCase):
 
             if '401' in str(response):
                 print "Getting token, it may have expired."
-                self.headers = self._get_token()
+                self.headers = self.get_token()
                 return True
             return False
 
