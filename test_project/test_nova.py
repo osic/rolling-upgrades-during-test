@@ -108,6 +108,25 @@ class ApiUptime(unittest.TestCase):
             f.write(json.dumps(status) + "\n")
             f.close()
 
+
+    def _delete_server_list(self, nova_url, headers, name=None):
+        response = requests.get(nova_url + 'servers', headers=headers)
+
+	while any(c in str(response) for c in ('201','200','202')):
+
+	    response = response.json()
+
+	    for i in response['servers']:
+	        if i['name'] == name:
+	            server_delete = self.delete_server(nova_url, headers, i['id'])
+
+            if '401' in str(response):
+                print "Getting token, it may have expired."
+                self.headers = self._get_token()
+                return True
+            return False
+
+
     def create_server(self,url,headers,name, image, flavor, data):
 	avg_build_time = 0
 	url = url + '/servers'
@@ -141,15 +160,21 @@ class ApiUptime(unittest.TestCase):
         status, avg_build_time = self._wait_until(url + '/' + self.server_id, headers)
 	return status, avg_build_time
 
-    def delete_server(self, url, headers):
-	if self.server_id == None:
+    def delete_server(self, url, headers, server_id=None):
+
+	if server_id:
+	    pass
+	else:
+	    server_id = self.server_id
+
+	if server_id == None:
 	    return '204'
 	else:
-	    url = url + '/servers/' + str(self.server_id)
+	    url = url + '/servers/' + str(server_id)
 	    response = str(requests.delete(url, headers=headers))
 	
 	    if '204' not in response:
-	        self.error_output = "Error deleting server: " + self.server_id + " on line 146"
+	        self.error_output = "Error deleting server: " + str(server_id) + " on line 146"
 	return response
 
     def report(self, conn, service, success, total, start_time, end_time, down_time, duration, avg_build_time):
@@ -255,6 +280,9 @@ class ApiUptime(unittest.TestCase):
 		    pass
 		elif '401' in server or '401' in server_delete:
 		    headers = False
+	        elif '403' in server:
+		    #If it is getting forbidden, there may be a limits issue
+		    self._delete_server_list(nova_url, headers, name)
                 elif any(c in str(server) for c in ('ACTIVE','ERROR','BUILD')) or self.server_id:
                     #Delete server
 		    server_delete = self.delete_server(nova_url, headers)
