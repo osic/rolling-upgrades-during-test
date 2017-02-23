@@ -160,13 +160,12 @@ class ApiUptime(unittest.TestCase):
 	return status, avg_build_time
 
     def delete_server(self, url, headers, server_id=None):
+    	if server_id == None: return '204'
 
 	if server_id:
 	    pass
 	else:
 	    server_id = self.server_id
-	
-	if server_id == None: return '204'
 
         url = url + '/servers/' + str(server_id)
         try:
