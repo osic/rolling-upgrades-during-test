@@ -134,17 +134,9 @@ class ApiUptime(unittest.TestCase):
 
 	if any(c in str(response) for c in ('201','202')):
             pass
-        elif any(c in str(response) for c in ('401','403','400')):
+        elif any(c in str(response) for c in ('401','403','400','500')):
             self.error_output = str(response) + " creating server on line 118"
             return str(response), avg_build_time
-        elif '500' in str(response):
-            self.error_output = str(response) + " creating server on line 122 (500)"
-	    try:
-                response = response.json()
-                self.server_id = response['server']['id']
-            except Exception as e:
-	        pass
-            return 'ERROR', avg_build_time
 	else:
             self.error_output = str(response) + " creating server on line 126"
             try:
@@ -280,7 +272,7 @@ class ApiUptime(unittest.TestCase):
 		    pass
 		elif '401' in server or '401' in server_delete:
 		    headers = False
-	        elif '403' in server:
+	        elif any(c in str(server) for c in ('403','500')):
 		    #If it is getting forbidden, there may be a limits issue
 		    self._delete_server_list(nova_url, headers, name)
                 elif any(c in str(server) for c in ('ACTIVE','ERROR','BUILD')) or self.server_id:
