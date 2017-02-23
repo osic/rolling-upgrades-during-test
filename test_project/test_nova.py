@@ -286,7 +286,7 @@ class ApiUptime(unittest.TestCase):
 			done_time = time.time()
                         total_down_time += (done_time - start_time)
 			duration += (done_time-start_time)
-			self.error_output = str(server_delete) + " trying to delete server on fail"
+			self.error_output += "-" + str(server_delete) + " trying to delete server on fail"
 
                         #Write to status log
                         self.write_status(service,status,status_timestamp,self.error_output,total_down_time,duration,str(build_start))
