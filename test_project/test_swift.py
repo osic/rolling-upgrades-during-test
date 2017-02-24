@@ -86,13 +86,13 @@ class ApiUptime(unittest.TestCase):
 	url = url + container_name + '/' + object_name
 	response = str(requests.delete(url, headers=headers))
 
-        return response
+        return str(response)
 	    
     def delete_container(self, url, headers, container_name):
 	url = url + container_name
 	response = str(requests.delete(url, headers=headers))
 
-        return response
+        return str(response)
 
 
     def write_status(self, service, status, build_start, error, total_down, duration, test_start ):
