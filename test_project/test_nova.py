@@ -126,7 +126,7 @@ class ApiUptime(unittest.TestCase):
             self.headers = self.get_token()
             return status
 
-	while any(c in str(response) for c in ('201','200','202')):
+	if any(c in str(response) for c in ('201','200','202')):
 
 	    response = response.json()
 
