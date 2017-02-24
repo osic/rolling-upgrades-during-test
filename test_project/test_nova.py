@@ -80,8 +80,13 @@ class ApiUptime(unittest.TestCase):
 	avg_build_time = 0
 
 	while get  <> 'ACTIVE':
-	    #Sending requests to OS
-	    response = requests.get(url, headers=headers)
+            #Sending requests to OS
+            try:
+                response = requests.get(url, headers=headers)
+            except Exception as e:
+                print "Received " + str(e) + " retreiving server status in _wait_until."
+                self.error_output += "Received " + str(e) + " retreiving url in _wait_until."
+                return 'ERROR', 0
 
 	    #Analyzing response
             if '200' in str(response):
@@ -148,12 +153,13 @@ class ApiUptime(unittest.TestCase):
 	try:
 	    response = requests.post(url, data=data,headers=headers)
 	except Exception as e:
-	    self.error_output = str(e) + " creating server on line 143"
+	    self.error_output = str(e) + " creating server on line 156"
+            return 'ERROR', 0
 
 	if any(c in str(response) for c in ('201','202')):
             pass
         else:
-            self.error_output = str(response) + " creating server on line 118"
+            self.error_output = str(response) + " creating server on line 162"
             return str(response), avg_build_time
 
 	#Wait until active
@@ -174,11 +180,11 @@ class ApiUptime(unittest.TestCase):
         try:
 	    response = str(requests.delete(url, headers=headers))
 	except Exception as e:
-	    self.error_output = str(e) + " deleting server " + server_id + " on line 143"
-	    response = '204'
+	    self.error_output = str(e) + " deleting server " + server_id + " on line 183"
+	    return 'ERROR'
 	
 	if '204' not in response:
-	    self.error_output = "Error deleting server: " + str(server_id) + " on line 146"
+	    self.error_output = "Error deleting server: " + str(server_id) + " on line 187"
 	return response
 
     def report(self, conn, service, success, total, start_time, end_time, down_time, duration, avg_build_time):
@@ -276,9 +282,9 @@ class ApiUptime(unittest.TestCase):
 
 		if self.error_output != None:
 		    print self.error_output + ", " + str(e)
-		    self.error_output = self.error_output + ", " + str(e) + " line 245"
+		    self.error_output = self.error_output + ", " + str(e) + " line 285"
 		else:
-		    self.error_output = str(e) + " line 247"
+		    self.error_output = str(e) + " line 287"
 
 		if server == None:
 		    pass
