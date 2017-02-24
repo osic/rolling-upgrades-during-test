@@ -263,7 +263,7 @@ class ApiUptime(unittest.TestCase):
 		avg_build_time += build_time
 
 		#Delete server
-                server_delete = self.delete_server(nova_url, headers)
+                server_delete = self.delete_server(nova_url, headers, self.server_id)
 	        print "server delete: " + str(server_delete)
 		self.assertIn('204',server_delete)
 
