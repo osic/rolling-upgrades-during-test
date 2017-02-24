@@ -131,6 +131,7 @@ class ApiUptime(unittest.TestCase):
 	    response = response.json()
 
 	    for i in response['servers']:
+		server_delete = ''
 	        if i['name'] == name:
 		    while '204' not in str(server_delete):
 	                server_delete = self.delete_server(nova_url, headers, i['id'])
