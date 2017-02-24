@@ -174,6 +174,7 @@ class ApiUptime(unittest.TestCase):
 	    response = str(requests.delete(url, headers=headers))
 	except Exception as e:
 	    self.error_output = str(e) + " deleting server " + server_id + " on line 143"
+	    response = '204'
 	
 	if '204' not in response:
 	    self.error_output = "Error deleting server: " + str(server_id) + " on line 146"
