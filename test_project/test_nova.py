@@ -316,6 +316,7 @@ class ApiUptime(unittest.TestCase):
             self.error_output = None
 	    self.server_id = None
 
+	self._delete_server_list(nova_url, headers, name)
 	avg_build_time = avg_build_time/1
 
         self.report(conn, service, sum(output),
