@@ -115,7 +115,6 @@ class ApiUptime(unittest.TestCase):
 
 
     def _delete_server_list(self, nova_url, headers, name=None):
-	status = True
 	server_delete = ''
 
 	try:
@@ -123,13 +122,12 @@ class ApiUptime(unittest.TestCase):
 	except Exception as e:
 	    print "Received: " + str(e) + " trying to get list to delete servers"
 	    self.error_output += "Received: " + str(e) + " trying to get list to delete servers"
-	    status = False
-	    return status
+	    return False
 
         if '401' in str(response):
             print "Getting token, it may have expired."
             self.headers = self.get_token()
-            return status
+            return False
 
 	if any(c in str(response) for c in ('201','200','202')):
 
@@ -144,7 +142,7 @@ class ApiUptime(unittest.TestCase):
 				print "Error trying to delete server : " + i['id'] + " " + server_delete
 				self.error_output += "Error trying to delete server: " + i['id'] + " " + server_delete
 				sleep(5)
-            return status
+            return True
 
 
     def create_server(self,url,headers,name, image, flavor, data):
@@ -291,9 +289,11 @@ class ApiUptime(unittest.TestCase):
 		elif '401' in str(server) or '401' in str(server_delete):
 		    headers = False
 	        else:
+		    delete_list_status = False
 		    #Remove all servers
-		    self._delete_server_list(nova_url, headers, name)
-		    sleep(1)
+		    while delete_list_status != True
+		        delete_list_status = self._delete_server_list(nova_url, headers, name)
+		        sleep(1)
 
                 #Record down time
                 status_timestamp = str(datetime.now().strftime("%Y-%m-%dT%H:%M:%S%z"))
