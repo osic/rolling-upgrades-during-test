@@ -93,7 +93,7 @@ class ApiUptime(unittest.TestCase):
                 get = response.json()['server']['status']
                 build_time = int(time.time() - start_time)
                 if build_time > 29 or get == 'ERROR':
-		    if str(get) != None
+		    if str(get) != None:
 		        self.error_output += "Timed out or got error for status: " + str(get)
 		    else:
 			self.error_output += "Timed out or got error (or null) for status in wait"
