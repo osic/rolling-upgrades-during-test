@@ -139,7 +139,7 @@ class ApiUptime(unittest.TestCase):
 	    for i in response['servers']:
 		server_delete = ''
 	        if i['name'] == name:
-		    while '204' not in str(server_delete):
+		    while any(c not in str(server_delete) for c in ('204','404')):
 	                server_delete = self.delete_server(nova_url, headers, i['id'])
 			if '204' not in str(server_delete):
 				print "Error trying to delete server : " + i['id'] + " " + server_delete
