@@ -294,7 +294,7 @@ class ApiUptime(unittest.TestCase):
 	        else:
 		    delete_list_status = False
 		    #Remove all servers
-		    while delete_list_status != True
+		    while delete_list_status != True:
 		        delete_list_status = self._delete_server_list(nova_url, headers, name)
 		        sleep(1)
 
