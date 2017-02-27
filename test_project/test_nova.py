@@ -99,7 +99,10 @@ class ApiUptime(unittest.TestCase):
 			self.error_output += "Timed out or got error (or null) for status in wait"
                     return str(get), 0
 	    else:
-		self.error_output += "Error retrieving status in wait: " + str(response)
+		if response:
+		    self.error_output += "Error retrieving status in wait: " + str(response)
+		else:
+		    self.error_output += "Error retrieving status in wait. Response was 'None'"
 		get = 'ERROR'
 		return get, 0
 
