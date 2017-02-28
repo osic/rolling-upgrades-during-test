@@ -167,6 +167,8 @@ class ApiUptime(unittest.TestCase):
 	if any(c in str(response) for c in ('201','202')):
             pass
         else:
+            if str(response) == None:
+		response = "Null value received"
             self.error_output = str(response) + " creating server on line 162"
             return str(response), avg_build_time
 
@@ -188,7 +190,7 @@ class ApiUptime(unittest.TestCase):
         try:
 	    response = str(requests.delete(url, headers=headers))
 	except Exception as e:
-	    self.error_output = str(e) + " deleting server " + server_id + " on line 183"
+	    self.error_output = str(e) + " deleting server " + str(server_id) + " on line 183"
 	    return 'ERROR'
 	
 	if '204' not in response:
