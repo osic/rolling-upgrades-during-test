@@ -161,7 +161,7 @@ class ApiUptime(unittest.TestCase):
 	try:
 	    response = requests.post(url, data=data,headers=headers)
 	except Exception as e:
-	    self.error_output = str(e) + " creating server on line 156"
+	    self.error_output = "Failed creating server on line 164"
             return 'ERROR', 0
 
 	if any(c in str(response) for c in ('201','202')):
@@ -169,7 +169,7 @@ class ApiUptime(unittest.TestCase):
         else:
             if str(response) == None:
 		response = "Null value received"
-            self.error_output = str(response) + " creating server on line 162"
+            self.error_output = "Failed creating server on line 172"
             return str(response), avg_build_time
 
 	#Wait until active
@@ -190,11 +190,11 @@ class ApiUptime(unittest.TestCase):
         try:
 	    response = str(requests.delete(url, headers=headers))
 	except Exception as e:
-	    self.error_output = str(e) + " deleting server " + str(server_id) + " on line 183"
+	    self.error_output = "Failed deleting server  on line 193"
 	    return 'ERROR'
 	
 	if '204' not in response:
-	    self.error_output = "Error deleting server: " + str(server_id) + " on line 187"
+	    self.error_output = "Error deleting server:  on line 197"
 	return response
 
     def report(self, conn, service, success, total, start_time, end_time, down_time, duration, avg_build_time):
@@ -292,9 +292,9 @@ class ApiUptime(unittest.TestCase):
 
 		if self.error_output != None:
 		    print self.error_output + ", " + str(e)
-		    self.error_output = self.error_output + ", " + str(e) + " line 285"
+		    self.error_output = self.error_output + ", " + str(e) + " line 295"
 		else:
-		    self.error_output = str(e) + " line 287"
+		    self.error_output = str(e) + " line 297"
 
 		if server == None:
 		    pass
