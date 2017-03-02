@@ -1,21 +1,23 @@
+import json
 import logging
+import os
+import requests
 import sys
 import time
-import json
-import requests
-import urllib2
 import unittest
-import os
+import urllib2
+
 
 from datetime import datetime
-from multiprocessing import Pipe, Process
 from time import sleep
+from multiprocessing import Pipe, Process
+from inspect import currentframe, getframeinfo
 
 class ApiUptime(unittest.TestCase):
     def __init__(self, version, username, password, tenant, auth_url):
         self.url = auth_url + '/'
 	self.data = '{"auth":{"identity":{"methods": ["password"],"password": {"user":{"name": "' + username + '","domain":{"name":"Default"},"password": "' + password + '"}}}}}'
-
+	self.frameinfo = getframeinfo(currentframe())
 
     def get_token(self):
         get_token = None
@@ -29,7 +31,7 @@ class ApiUptime(unittest.TestCase):
             if ('503' or '404') in str(e):
                 return False, False
 	    else:
-	        print "Error in Keystone line 32: " + str(e)				
+	        print "Error in Keystone line : " + str(self.frameinfo.lineno) + " " + str(e)				
                 return False, False
 
         token = f['X-Subject-Token']
