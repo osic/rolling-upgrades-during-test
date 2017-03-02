@@ -7,13 +7,15 @@ import json
 import os
 
 from datetime import datetime
-from time import sleep
+from inspect import currentframe, getframeinfo
 from multiprocessing import Pipe, Process
+from time import sleep
 
 class ApiUptime(unittest.TestCase):
     def __init__(self, version, username, password, tenant, auth_url):
 	self.url = auth_url + '/'
         self.data = '{"auth":{"passwordCredentials":{"username":"' + username + '","password": "' + password + '"},"tenantName": "' + tenant + '"}}'
+	self.frameinfo = getframeinfo(currentframe())
 
     def get_token(self):
         get_token = None
@@ -27,7 +29,7 @@ class ApiUptime(unittest.TestCase):
 	    if any(c in str(e) for c in ('503','404')):
 		return False
 	    else:
-	        print "Error on line 30: " + str(e)
+	        print "Error on line : " + str(self.frameinfo.lineno) + " " + str(e)
                 return False
 
         for x in f:
@@ -50,7 +52,7 @@ class ApiUptime(unittest.TestCase):
 	    if any(c in str(e) for c in ('503','404')):
                 return False
 	    else:
-	        print "Error on line 53: " + str(e)
+	        print "Error on line : " + str(self.frameinfo.lineno) + " " + str(e)
                 return False
 
 	try:
