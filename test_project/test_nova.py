@@ -1,14 +1,15 @@
-import time
-import sys
-import unittest
-import requests
-import urllib2
 import json
 import os
+import requests
+import sys
+import time
+import unittest
+import urllib2
 
 from datetime import datetime
-from time import sleep
+from inspect import currentframe, getframeinfo
 from multiprocessing import Pipe, Process
+from time import sleep
 
 class ApiUptime(unittest.TestCase):
     def __init__(self, version, username, password, tenant, auth_url):
@@ -16,6 +17,7 @@ class ApiUptime(unittest.TestCase):
 	self.url = auth_url + '/'
         self.data = '{"auth":{"passwordCredentials":{"username":"' + username + '","password": "' + password + '"},"tenantName": "' + tenant + '"}}'
 	self.error_output = ''
+	self.frameinfo = getframeinfo(currentframe())
 
     def get_token(self):
         get_token = None
@@ -27,10 +29,10 @@ class ApiUptime(unittest.TestCase):
             f = urllib2.urlopen(req)
 	except Exception as e:
 	    if any(c in str(e) for c in ('503','404')):
-		self.error_output = str(e) + " line 30"
+		self.error_output = str(e) + str(self.frameinfo.lineno)
 		return False
 	    else:
-		self.error_output = str(e) + " line 33"
+		self.error_output = str(e) + str(self.frameinfo.lineno)
 		return False		
 
         for x in f:
@@ -50,10 +52,10 @@ class ApiUptime(unittest.TestCase):
             f = urllib2.urlopen(req)
         except Exception as e:
 	    if any(c in str(e) for c in ('503','404')):
-		self.error_output = str(e) + " line 53"
+		self.error_output = str(e) + "  line " + str(self.frameinfo.lineno)
                 return False
 	    else:
-		self.error_output = str(e) + " line 56"
+		self.error_output = str(e) + "  line " + str(self.frameinfo.lineno)
 		return False
 
 	try:
@@ -161,7 +163,7 @@ class ApiUptime(unittest.TestCase):
 	try:
 	    response = requests.post(url, data=data,headers=headers)
 	except Exception as e:
-	    self.error_output = str(e) + " creating server on line 164"
+	    self.error_output = str(e) + " creating server on line " + str(self.frameinfo.lineno)
             return 'ERROR', 0
 
 	if any(c in str(response) for c in ('201','202')):
@@ -169,7 +171,7 @@ class ApiUptime(unittest.TestCase):
         else:
             if str(response) == None:
 		response = "Null value received"
-            self.error_output = str(response) + " creating server on line 172"
+            self.error_output = str(response) + " creating server on line " + str(self.frameinfo.lineno)
             return str(response), avg_build_time
 
 	#Wait until active
@@ -190,11 +192,11 @@ class ApiUptime(unittest.TestCase):
         try:
 	    response = str(requests.delete(url, headers=headers))
 	except Exception as e:
-	    self.error_output = str(e) + " deleting server  on line 193"
+	    self.error_output = str(e) + " deleting server  on line " + str(self.frameinfo.lineno)
 	    return 'ERROR'
 	
 	if '204' not in response:
-	    self.error_output = "Error deleting server: " + str(server_id) + "  on line 197"
+	    self.error_output = "Error deleting server: " + str(server_id) + "  on line " + str(self.frameinfo.lineno)
 	return response
 
     def report(self, conn, service, success, total, start_time, end_time, down_time, duration, avg_build_time):
@@ -292,9 +294,9 @@ class ApiUptime(unittest.TestCase):
 
 		if self.error_output != None:
 		    print self.error_output + ", " + str(e)
-		    self.error_output = self.error_output + ", " + str(e) + " line 295"
+		    self.error_output = self.error_output + ", " + str(e) + " line " + str(self.frameinfo.lineno)
 		else:
-		    self.error_output = str(e) + " line 297"
+		    self.error_output = str(e) + " line " + str(self.frameinfo.lineno)
 
 		if server == None:
 		    pass
