@@ -12,10 +12,10 @@ from multiprocessing import Pipe, Process
 
 class ApiUptime(unittest.TestCase):
     def __init__(self, version, username, password, tenant, auth_url):
-	self.server_id = None
+	self.server_id = ''
 	self.url = auth_url + '/'
         self.data = '{"auth":{"passwordCredentials":{"username":"' + username + '","password": "' + password + '"},"tenantName": "' + tenant + '"}}'
-	self.error_output = None
+	self.error_output = ''
 
     def get_token(self):
         get_token = None
