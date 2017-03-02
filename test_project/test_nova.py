@@ -329,8 +329,8 @@ class ApiUptime(unittest.TestCase):
 	    #Aggregating total run time of test
 	    duration += (done_time-start_time)
 	    self.write_status(service,status,status_timestamp,self.error_output,total_down_time,duration,str(build_start))
-            self.error_output = None
-	    self.server_id = None
+            self.error_output = ''
+	    self.server_id = ''
 
 	self._delete_server_list(nova_url, headers, name)
 	avg_build_time = avg_build_time/1
