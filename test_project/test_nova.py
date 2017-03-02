@@ -29,10 +29,10 @@ class ApiUptime(unittest.TestCase):
             f = urllib2.urlopen(req)
 	except Exception as e:
 	    if any(c in str(e) for c in ('503','404')):
-		self.error_output = str(e) + str(self.frameinfo.lineno)
+		self.error_output = str(e) + "  line " + str(self.frameinfo.lineno)
 		return False
 	    else:
-		self.error_output = str(e) + str(self.frameinfo.lineno)
+		self.error_output = str(e) + "  line " + str(self.frameinfo.lineno)
 		return False		
 
         for x in f:
