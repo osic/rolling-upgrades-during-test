@@ -305,7 +305,11 @@ class ApiUptime(unittest.TestCase):
 		    #Remove all servers
 		    while delete_list_status != True:
 		        delete_list_status = self._delete_server_list(nova_url, headers, name)
+                        if os.path.isfile('/usr/during.uptime.stop'):
+		            print "Ending Nova during testing."
+                            break
 		        sleep(1)
+		        
 
                 #Record down time
                 status_timestamp = str(datetime.now().strftime("%Y-%m-%dT%H:%M:%S%z"))
