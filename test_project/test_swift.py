@@ -98,7 +98,7 @@ class ApiUptime(unittest.TestCase):
 
 
     def write_status(self, service, status, build_start, error, total_down, duration, test_start ):
-	    status = {"service": service, "status": status, "timestamp": build_start, "error": error, "total_down": total_down, "duration": duration, "time_run_started": test_start}
+	    status = {"service": service, service + "_status": status, "timestamp": build_start, "error": error, service + "_total_down": total_down, service + "_duration": duration, "time_run_started": test_start}
             f = open('../output/swift_status.json','a')
             f.write(json.dumps(status) + "\n")
             f.close()
