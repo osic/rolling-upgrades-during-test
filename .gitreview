@@ -1,0 +1,4 @@
+[gerrit]
+host=review.gerrithub.io
+port=29418
+project=osic/rolling-upgrades-during-test.git
