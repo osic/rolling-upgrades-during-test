@@ -34,14 +34,14 @@ class ArgumentParser(argparse.ArgumentParser):
         self.add_argument(
             "-o", "--output-file", metavar="<path to output file>",
             required=False, default=None)
-	
+
         self.add_argument(
             "-m", "--multiprocess", required=False, action='store_true')
 
 
 def entry_point():
     cl_args = ArgumentParser().parse_args()
-    
+
     # Check if a process is already running for script
     if cl_args.multiprocess:
         pass
@@ -50,8 +50,8 @@ def entry_point():
 
     # Initialize Config Variables
     config = SafeConfigParser()
-    if os.path.isfile("../etc/tempest.conf"):
-        config.read("../etc/tempest.conf") #initialize environment from tempest.conf
+    if os.path.isfile("../tempest/etc/tempest.conf"):
+        config.read("../tempest/etc/tempest.conf") #initialize environment from tempest.conf
         user = config.get("auth", "admin_username")
         password = config.get("auth", "admin_password")
         tenant = config.get("auth", "admin_project_name")
@@ -77,9 +77,9 @@ def entry_point():
     object_name = config.get("openstack", "object_name")
     daemon_file = config.get("openstack", "daemon_file") or os.path.join(sys.prefix, "during.uptime.stop")
     output_file = cl_args.output_file or config.get("openstack", "output_file")
-	
+
     print "To stop script please create during.uptime.stop file in: " + sys.prefix
-    
+
     if cl_args.daemon and os.path.exists(daemon_file):
         os.remove(daemon_file)
 
@@ -120,7 +120,7 @@ def entry_point():
 
     outputs = [pipe.recv() for pipe in pipes]
     final_output = {k: v for d in outputs for k, v in d.items()}
-    
+
     #Will tweak later
     #if len(services) == 1:
     #    output_file = service + '_' + output_file
